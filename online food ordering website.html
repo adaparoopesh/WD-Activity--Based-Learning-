@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlavorDash - Delicious Food Delivered Fast</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            orange: '#FF5722',
+                            red: '#E53935',
+                            darkRed: '#C62828',
+                            cream: '#FFF8F0',
+                            accent: '#FFC107',
+                            dark: '#1F2937'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome & Phosphor Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FFF8F0;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF8F0;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF5722;
+            border-radius: 4px;
+        }
+        /* Custom Animation Utilities */
+        .badge-bounce {
+            animation: bounce 0.5s ease;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.25); }
+        }
+        /* Glassmorphism effects */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen relative overflow-x-hidden">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- NAVBAR -->
+    <header class="sticky top-0 z-40 glass-nav shadow-sm border-b border-orange-100 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo -->
+                <a href="#home" onclick="navTo('home')" class="flex items-center gap-2 group cursor-pointer">
+                    <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-brand-orange to-brand-red flex items-center justify-center text-white shadow-lg shadow-orange-500/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid font-bold fa-utensils text-xl"></i>
+                    </div>
+                    <span class="text-2xl font-extrabold bg-gradient-to-r from-brand-orange to-brand-red bg-clip-text text-transparent">
+                        Flavor<span class="text-gray-900">Dash</span>
+                    </span>
+                </a>
+
+                <!-- Desktop Nav Links -->
+                <nav class="hidden md:flex items-center gap-8 font-medium text-gray-700">
+                    <a href="#home" onclick="navTo('home')" class="hover:text-brand-orange transition-colors">Home</a>
+                    <a href="#restaurants" onclick="navTo('restaurants')" class="hover:text-brand-orange transition-colors">Restaurants</a>
+                    <a href="#menu" onclick="navTo('menu')" class="hover:text-brand-orange transition-colors">Menu</a>
+                    <a href="#offers" onclick="navTo('offers')" class="hover:text-brand-orange transition-colors">Offers</a>
+                    <a href="#reviews" onclick="navTo('reviews')" class="hover:text-brand-orange transition-colors">Reviews</a>
+                    <a href="#faqs" onclick="navTo('faqs')" class="hover:text-brand-orange transition-colors">FAQs</a>
+                </nav>
+
+                <!-- Actions: Search, Wishlist, Cart, Auth -->
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <!-- Wishlist Toggle -->
+                    <button onclick="toggleWishlistModal()" class="relative p-2.5 rounded-xl text-gray-700 hover:text-brand-red hover:bg-orange-50 transition-all" title="View Favorites">
+                        <i class="fa-solid fa-heart text-xl"></i>
+                        <span id="wishlist-badge" class="hidden absolute -top-1 -right-1 bg-brand-red text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">0</span>
+                    </button>
+
+                    <!-- Cart Trigger Button -->
+                    <button onclick="openCartModal()" class="relative bg-gradient-to-r from-brand-orange to-brand-red text-white px-4 py-2.5 rounded-xl font-semibold shadow-md shadow-orange-500/20 hover:shadow-lg hover:shadow-orange-500/30 hover:scale-105 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        <span class="hidden sm:inline">Cart</span>
+                        <span id="cart-badge" class="bg-white text-brand-orange text-xs font-black px-2 py-0.5 rounded-full">0</span>
+                    </button>
+
+                    <!-- User Account / Login Button -->
+                    <button id="auth-btn" onclick="openAuthModal()" class="border-2 border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white px-4 py-2 rounded-xl font-semibold transition-all">
+                        Login
+                    </button>
+
+                    <!-- Mobile Hamburger -->
+                    <button onclick="toggleMobileMenu()" class="md:hidden text-gray-700 hover:text-brand-orange p-2">
+                        <i id="mobile-menu-icon" class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-orange-100 px-4 pt-2 pb-6 space-y-3">
+            <a href="#home" onclick="navTo('home'); toggleMobileMenu()" class="block py-2 font-medium text-gray-700 hover:text-brand-orange">Home</a>
+            <a href="#restaurants" onclick="navTo('restaurants'); toggleMobileMenu()" class="block py-2 font-medium text-gray-700 hover:text-brand-orange">Restaurants</a>
+            <a href="#menu" onclick="navTo('menu'); toggleMobileMenu()" class="block py-2 font-medium text-gray-700 hover:text-brand-orange">Menu</a>
+            <a href="#offers" onclick="navTo('offers'); toggleMobileMenu()" class="block py-2 font-medium text-gray-700 hover:text-brand-orange">Offers & Coupons</a>
+            <a href="#reviews" onclick="navTo('reviews'); toggleMobileMenu()" class="block py-2 font-medium text-gray-700 hover:text-brand-orange">Reviews</a>
+            <a href="#faqs" onclick="navTo('faqs'); toggleMobileMenu()" class="block py-2 font-medium text-gray-700 hover:text-brand-orange">FAQs</a>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <!-- 1. HERO SECTION -->
+        <section id="home" class="relative pt-8 pb-16 md:py-24 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- Left Hero Content -->
+                    <div class="space-y-6 text-center lg:text-left">
+                        <div class="inline-flex items-center gap-2 bg-orange-100 text-brand-orange px-4 py-2 rounded-full font-semibold text-sm">
+                            <i class="fa-solid fa-bolt text-brand-red"></i>
+                            <span>Fastest Delivery in Town (Under 30 mins)</span>
+                        </div>
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-gray-900 leading-tight">
+                            Delicious Food, <br class="hidden sm:inline"/>
+                            <span class="bg-gradient-to-r from-brand-orange to-brand-red bg-clip-text text-transparent">Delivered Hot & Fresh</span>
+                        </h1>
+                        <p class="text-lg text-gray-600 max-w-xl mx-auto lg:mx-0">
+                            Satisfy your cravings with top-rated dishes from your favorite local restaurants. Fast delivery, exclusive deals, and zero hassle.
+                        </p>
+
+                        <!-- Search Bar -->
+                        <div class="relative max-w-md mx-auto lg:mx-0 bg-white p-2 rounded-2xl shadow-xl shadow-orange-500/10 border border-orange-100 flex items-center gap-2">
+                            <i class="fa-solid fa-magnifying-glass text-gray-400 pl-3"></i>
+                            <input id="hero-search-input" type="text" placeholder="Search pizza, biryani, burgers..." class="w-full bg-transparent focus:outline-none text-gray-800 placeholder-gray-400 py-2">
+                            <button onclick="handleSearchFromHero()" class="bg-brand-orange hover:bg-brand-red text-white font-bold px-6 py-3 rounded-xl transition-all shadow-md">
+                                Search
+                            </button>
+                        </div>
+
+                        <!-- Highlights Stats -->
+                        <div class="pt-6 grid grid-cols-3 gap-4 border-t border-orange-200/60 max-w-md mx-auto lg:mx-0">
+                            <div>
+                                <p class="text-2xl font-black text-brand-orange">150+</p>
+                                <p class="text-xs text-gray-500 font-medium">Restaurants</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-black text-brand-orange">30 Min</p>
+                                <p class="text-xs text-gray-500 font-medium">Avg Delivery</p>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-black text-brand-orange">4.9 ★</p>
+                                <p class="text-xs text-gray-500 font-medium">User Rating</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Hero Visual -->
+                    <div class="relative flex justify-center">
+                        <div class="absolute -top-10 -bottom-10 w-full bg-gradient-to-tr from-orange-200 to-red-100 rounded-full filter blur-3xl opacity-50 -z-10"></div>
+                        <div class="relative max-w-md lg:max-w-none">
+                            <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" alt="Delicious Feast" class="rounded-3xl shadow-2xl object-cover w-full h-[380px] sm:h-[450px] border-4 border-white">
+                            
+                            <!-- Floating Promo Banner -->
+                            <div class="absolute -bottom-6 -left-4 sm:left-6 bg-white p-4 rounded-2xl shadow-xl border border-orange-100 flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-xl bg-orange-100 text-brand-orange flex items-center justify-center text-2xl">
+                                    🍕
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-wide">Special Discount</p>
+                                    <p class="text-sm font-extrabold text-gray-800">50% OFF First Order</p>
+                                    <p class="text-xs text-brand-red font-semibold">Code: WELCOME50</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. POPULAR RESTAURANTS SECTION -->
+        <section id="restaurants" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+                    <div>
+                        <span class="text-brand-orange font-bold uppercase tracking-wider text-sm">Top Rated Places</span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">Featured Restaurants</h2>
+                    </div>
+                    <!-- Restaurant Filter Buttons -->
+                    <div class="flex items-center gap-2 mt-4 md:mt-0 overflow-x-auto pb-2">
+                        <button onclick="filterRestaurants('all')" class="rest-filter-btn px-4 py-2 rounded-xl font-medium text-sm transition-all bg-brand-orange text-white" data-filter="all">All</button>
+                        <button onclick="filterRestaurants('fastfood')" class="rest-filter-btn px-4 py-2 rounded-xl font-medium text-sm transition-all bg-gray-100 text-gray-600 hover:bg-orange-50" data-filter="fastfood">Fast Food</button>
+                        <button onclick="filterRestaurants('indian')" class="rest-filter-btn px-4 py-2 rounded-xl font-medium text-sm transition-all bg-gray-100 text-gray-600 hover:bg-orange-50" data-filter="indian">Indian</button>
+                        <button onclick="filterRestaurants('italian')" class="rest-filter-btn px-4 py-2 rounded-xl font-medium text-sm transition-all bg-gray-100 text-gray-600 hover:bg-orange-50" data-filter="italian">Italian</button>
+                    </div>
+                </div>
+
+                <!-- Restaurants Grid -->
+                <div id="restaurants-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MENU & FOOD ITEMS SECTION -->
+        <section id="menu" class="py-16 bg-brand-cream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-orange font-bold uppercase tracking-wider text-sm">Taste The Quality</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">Explore Our Menu</h2>
+                    <p class="text-gray-600 mt-2">Filter by category or search your favorite cravings.</p>
+                </div>
+
+                <!-- Category Chips Slider -->
+                <div class="flex items-center justify-start sm:justify-center gap-3 overflow-x-auto pb-4 mb-10 no-scrollbar">
+                    <button onclick="filterCategory('All')" class="cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-gradient-to-r from-brand-orange to-brand-red text-white active-cat" data-cat="All">
+                        <span>🍔</span> All Items
+                    </button>
+                    <button onclick="filterCategory('Pizza')" class="cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-white text-gray-700 hover:bg-orange-50 border border-orange-100" data-cat="Pizza">
+                        <span>🍕</span> Pizza
+                    </button>
+                    <button onclick="filterCategory('Burgers')" class="cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-white text-gray-700 hover:bg-orange-50 border border-orange-100" data-cat="Burgers">
+                        <span>🍔</span> Burgers
+                    </button>
+                    <button onclick="filterCategory('Biryani')" class="cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-white text-gray-700 hover:bg-orange-50 border border-orange-100" data-cat="Biryani">
+                        <span>OB</span> Biryani
+                    </button>
+                    <button onclick="filterCategory('Desserts')" class="cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-white text-gray-700 hover:bg-orange-50 border border-orange-100" data-cat="Desserts">
+                        <span>🍰</span> Desserts
+                    </button>
+                    <button onclick="filterCategory('Drinks')" class="cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-white text-gray-700 hover:bg-orange-50 border border-orange-100" data-cat="Drinks">
+                        <span>🥤</span> Drinks
+                    </button>
+                </div>
+
+                <!-- Active Filter Banner / Reset Search -->
+                <div id="search-status" class="hidden mb-6 flex items-center justify-between bg-orange-100 text-orange-800 px-4 py-2 rounded-xl">
+                    <span id="search-status-text">Showing results for ""</span>
+                    <button onclick="clearSearchFilter()" class="text-xs font-bold underline hover:text-brand-red">Clear Search</button>
+                </div>
+
+                <!-- Food Grid -->
+                <div id="food-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Food Cards Rendered Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. OFFERS & COUPONS SECTION -->
+        <section id="offers" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-12">
+                    <span class="text-brand-orange font-bold uppercase tracking-wider text-sm">Save Big Today</span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mt-1">Exclusive Offers & Coupons</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Coupon Card 1 -->
+                    <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
+                        <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 font-black">50%</div>
+                        <span class="bg-white/20 text-xs uppercase font-extrabold px-3 py-1 rounded-full">New User</span>
+                        <h3 class="text-2xl font-black mt-3">50% OFF First Order</h3>
+                        <p class="text-orange-100 text-sm mt-1">Maximum discount up to $15 on orders above $20.</p>
+                        <div class="mt-6 flex items-center justify-between bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20">
+                            <span class="font-mono font-bold text-lg tracking-wider pl-2">WELCOME50</span>
+                            <button onclick="copyCoupon('WELCOME50')" class="bg-white text-brand-red font-bold text-xs px-4 py-2 rounded-xl hover:bg-orange-50 transition-all shadow-md">
+                                Copy Code
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Coupon Card 2 -->
+                    <div class="bg-gradient-to-br from-amber-500 to-orange-600 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
+                        <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 font-black">20%</div>
+                        <span class="bg-white/20 text-xs uppercase font-extrabold px-3 py-1 rounded-full">Weekend Deal</span>
+                        <h3 class="text-2xl font-black mt-3">20% OFF Everything</h3>
+                        <p class="text-amber-100 text-sm mt-1">Applicable on all restaurants and categories.</p>
+                        <div class="mt-6 flex items-center justify-between bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20">
+                            <span class="font-mono font-bold text-lg tracking-wider pl-2">FLAVOR20</span>
+                            <button onclick="copyCoupon('FLAVOR20')" class="bg-white text-amber-700 font-bold text-xs px-4 py-2 rounded-xl hover:bg-orange-50 transition-all shadow-md">
+                                Copy Code
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Coupon Card 3 -->
+                    <div class="bg-gradient-to-br from-rose-600 to-red-800 rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
+                        <div class="absolute -right-6 -bottom-6 text-9xl opacity-10 font-black">FREE</div>
+                        <span class="bg-white/20 text-xs uppercase font-extrabold px-3 py-1 rounded-full">Freebie</span>
+                        <h3 class="text-2xl font-black mt-3">Free Delivery</h3>
+                        <p class="text-red-100 text-sm mt-1">Get free delivery on orders above $25 automatically.</p>
+                        <div class="mt-6 flex items-center justify-between bg-white/10 backdrop-blur-md p-2 rounded-2xl border border-white/20">
+                            <span class="font-mono font-bold text-lg tracking-wider pl-2">DELIVERY0</span>
+                            <button onclick="copyCoupon('DELIVERY0')" class="bg-white text-brand-darkRed font-bold text-xs px-4 py-2 rounded-xl hover:bg-orange-50 transition-all shadow-md">
+                                Copy Code
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. REVIEWS & FEEDBACK SECTION -->
+        <section id="reviews" class="py-16 bg-brand-cream">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    
+                    <!-- Review Form -->
+                    <div class="bg-white p-6 sm:p-8 rounded-3xl shadow-lg border border-orange-100">
+                        <h3 class="text-2xl font-black text-gray-900 mb-2">Leave a Review</h3>
+                        <p class="text-gray-500 text-sm mb-6">Shared your experience with us? Let others know!</p>
+                        
+                        <form id="review-form" onsubmit="handleReviewSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Your Name</label>
+                                <input type="text" id="review-name" required placeholder="John Doe" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Rating</label>
+                                <select id="review-rating" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                                    <option value="5">★★★★★ (5/5) Excellent</option>
+                                    <option value="4">★★★★☆ (4/5) Very Good</option>
+                                    <option value="3">★★★☆☆ (3/5) Average</option>
+                                    <option value="2">★★☆☆☆ (2/5) Poor</option>
+                                    <option value="1">★☆☆☆☆ (1/5) Terrible</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Your Feedback</label>
+                                <textarea id="review-text" rows="3" required placeholder="Food quality, delivery time, packaging..." class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange"></textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-brand-orange hover:bg-brand-red text-white font-bold py-3.5 rounded-xl transition-all shadow-md">
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Reviews Display List -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-2xl font-black text-gray-900">Customer Feedback</h3>
+                                <p class="text-gray-500 text-sm">Real reviews from our food lovers</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-3xl font-black text-brand-orange">4.9 / 5.0</p>
+                                <p class="text-xs text-gray-400">Based on 1,240+ orders</p>
+                            </div>
+                        </div>
+
+                        <div id="reviews-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Populated with JS -->
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. FAQS SECTION -->
+        <section id="faqs" class="py-16 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-brand-orange font-bold uppercase tracking-wider text-sm">Got Questions?</span>
+                    <h2 class="text-3xl font-extrabold text-gray-900 mt-1">Frequently Asked Questions</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <details class="group bg-gray-50 p-5 rounded-2xl border border-gray-200 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between font-bold text-gray-800 cursor-pointer">
+                            <span>How fast is the delivery?</span>
+                            <span class="transition group-open:rotate-180">
+                                <i class="fa-solid fa-chevron-down text-brand-orange"></i>
+                            </span>
+                        </summary>
+                        <p class="mt-3 text-gray-600 text-sm leading-relaxed">
+                            Our average delivery time is 25-35 minutes depending on your location and distance from the selected restaurant.
+                        </p>
+                    </details>
+
+                    <details class="group bg-gray-50 p-5 rounded-2xl border border-gray-200 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between font-bold text-gray-800 cursor-pointer">
+                            <span>How do I apply coupon discounts?</span>
+                            <span class="transition group-open:rotate-180">
+                                <i class="fa-solid fa-chevron-down text-brand-orange"></i>
+                            </span>
+                        </summary>
+                        <p class="mt-3 text-gray-600 text-sm leading-relaxed">
+                            Copy any coupon code from the Offers section and enter it inside your Cart drawer before clicking "Checkout".
+                        </p>
+                    </details>
+
+                    <details class="group bg-gray-50 p-5 rounded-2xl border border-gray-200 [&_summary::-webkit-details-marker]:hidden">
+                        <summary class="flex items-center justify-between font-bold text-gray-800 cursor-pointer">
+                            <span>What payment methods are supported?</span>
+                            <span class="transition group-open:rotate-180">
+                                <i class="fa-solid fa-chevron-down text-brand-orange"></i>
+                            </span>
+                        </summary>
+                        <p class="mt-3 text-gray-600 text-sm leading-relaxed">
+                            We accept Credit/Debit cards, UPI / NetBanking, Digital Wallets, and Cash on Delivery (COD).
+                        </p>
+                    </details>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-gray-300 pt-16 pb-8 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 rounded-xl bg-brand-orange flex items-center justify-center text-white text-lg font-bold">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <span class="text-2xl font-extrabold text-white">FlavorDash</span>
+                    </div>
+                    <p class="text-gray-400 text-sm">
+                        Bringing delicious restaurant meals directly to your doorstep with lightning speed and premium safety standards.
+                    </p>
+                    <div class="flex gap-4 text-lg">
+                        <a href="#" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-brand-orange hover:text-white transition-all"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a href="#home" onclick="navTo('home')" class="hover:text-brand-orange transition-colors">Home</a></li>
+                        <li><a href="#restaurants" onclick="navTo('restaurants')" class="hover:text-brand-orange transition-colors">Restaurants</a></li>
+                        <li><a href="#menu" onclick="navTo('menu')" class="hover:text-brand-orange transition-colors">Explore Menu</a></li>
+                        <li><a href="#offers" onclick="navTo('offers')" class="hover:text-brand-orange transition-colors">Special Offers</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Contact Us</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><i class="fa-solid fa-location-dot text-brand-orange mr-2"></i> 123 Foodie Street, Gourmet City</li>
+                        <li><i class="fa-solid fa-phone text-brand-orange mr-2"></i> +1 (800) 555-DASH</li>
+                        <li><i class="fa-solid fa-envelope text-brand-orange mr-2"></i> support@flavordash.com</li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-white font-bold mb-4">Subscribe & Get 15% Off</h4>
+                    <p class="text-xs text-gray-400 mb-3">Get secret promos & daily recommendations directly in your inbox.</p>
+                    <form onsubmit="event.preventDefault(); showToast('Subscribed to newsletter!');" class="flex gap-2">
+                        <input type="email" required placeholder="Enter email" class="bg-gray-800 border border-gray-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-orange w-full">
+                        <button type="submit" class="bg-brand-orange text-white font-bold px-4 rounded-xl text-sm hover:bg-brand-red transition-all">
+                            Join
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500">
+                <p>&copy; 2026 FlavorDash Inc. All rights reserved.</p>
+                <div class="flex gap-4 mt-2 sm:mt-0">
+                    <a href="#" class="hover:underline">Privacy Policy</a>
+                    <a href="#" class="hover:underline">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- BACK TO TOP BUTTON -->
+    <button id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})" class="hidden fixed bottom-6 left-6 z-40 bg-brand-orange text-white p-3.5 rounded-full shadow-2xl hover:bg-brand-red hover:scale-110 transition-all">
+        <i class="fa-solid fa-arrow-up text-lg"></i>
+    </button>
+
+    <!-- SHOPPING CART SLIDE-OVER MODAL -->
+    <div id="cart-modal" class="fixed inset-0 z-50 hidden overflow-hidden bg-black/50 backdrop-blur-sm transition-opacity">
+        <div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+                
+                <!-- Cart Header -->
+                <div class="p-6 bg-brand-cream border-b border-orange-100 flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-brand-orange text-2xl"></i>
+                        <h2 class="text-xl font-black text-gray-900">Your Order</h2>
+                    </div>
+                    <button onclick="closeCartModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-6 space-y-4">
+                    <!-- Dynamic Cart Items Rendered Here -->
+                </div>
+
+                <!-- Cart Footer & Checkout -->
+                <div id="cart-summary" class="p-6 border-t border-gray-100 bg-white space-y-4">
+                    <!-- Coupon Input -->
+                    <div class="flex gap-2">
+                        <input id="coupon-input" type="text" placeholder="Promo code (e.g. FLAVOR20)" class="flex-1 px-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-orange uppercase">
+                        <button onclick="applyCoupon()" class="bg-gray-800 text-white text-xs font-bold px-4 py-2 rounded-xl hover:bg-gray-900 transition-all">
+                            Apply
+                        </button>
+                    </div>
+
+                    <!-- Discount Applied Tag -->
+                    <div id="applied-discount-tag" class="hidden flex items-center justify-between bg-green-50 text-green-700 px-3 py-1.5 rounded-xl text-xs font-semibold">
+                        <span id="applied-discount-text">Discount: - $0.00</span>
+                        <button onclick="removeCoupon()" class="text-green-900 font-bold hover:underline">Remove</button>
+                    </div>
+
+                    <!-- Price Breakdowns -->
+                    <div class="space-y-1.5 text-sm text-gray-600">
+                        <div class="flex justify-between">
+                            <span>Subtotal</span>
+                            <span id="cart-subtotal" class="font-semibold text-gray-900">$0.00</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Delivery Fee</span>
+                            <span id="cart-delivery" class="font-semibold text-gray-900">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>Taxes & Service (8%)</span>
+                            <span id="cart-tax">$0.00</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-black text-gray-900 pt-2 border-t border-gray-100">
+                            <span>Total</span>
+                            <span id="cart-total" class="text-brand-orange">$0.00</span>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2 pt-2">
+                        <button onclick="clearCartConfirm()" class="w-1/3 border border-red-200 text-red-600 hover:bg-red-50 font-bold py-3.5 rounded-xl text-xs transition-all">
+                            Clear Cart
+                        </button>
+                        <button onclick="proceedToCheckout()" class="w-2/3 bg-gradient-to-r from-brand-orange to-brand-red text-white font-extrabold py-3.5 rounded-xl shadow-lg hover:opacity-95 transition-all text-sm flex items-center justify-center gap-2">
+                            <span>Checkout</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkout-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm p-4 sm:p-6 md:p-10 flex items-center justify-center">
+        <div class="bg-white max-w-2xl w-full rounded-3xl shadow-2xl overflow-hidden my-8">
+            <div class="bg-brand-cream p-6 border-b border-orange-100 flex justify-between items-center">
+                <div>
+                    <h3 class="text-2xl font-black text-gray-900">Checkout</h3>
+                    <p class="text-xs text-gray-500">Provide delivery details & choose payment option</p>
+                </div>
+                <button onclick="closeCheckoutModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="checkout-form" onsubmit="handlePlaceOrder(event)" class="p-6 space-y-6">
+                <!-- Delivery Info -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide border-b border-gray-100 pb-2">1. Delivery Address</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Full Name *</label>
+                            <input type="text" id="chk-name" required placeholder="John Doe" class="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-brand-orange">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-700 mb-1">Phone Number *</label>
+                            <input type="tel" id="chk-phone" required placeholder="+1 (555) 000-1234" class="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-brand-orange">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">Delivery Address *</label>
+                        <input type="text" id="chk-address" required placeholder="Street, Apt #, Landmark" class="w-full px-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:border-brand-orange">
+                    </div>
+                </div>
+
+                <!-- Payment Selection -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide border-b border-gray-100 pb-2">2. Payment Method</h4>
+                    <p class="text-xs text-amber-700 bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                        <i class="fa-solid fa-circle-info mr-1"></i> Simulated payment environment. No real funds will be deducted.
+                    </p>
+                    <div class="grid grid-cols-3 gap-3">
+                        <label class="cursor-pointer border-2 border-brand-orange bg-orange-50/50 p-3 rounded-2xl flex flex-col items-center justify-center text-center gap-1 payment-radio-label">
+                            <input type="radio" name="payment" value="card" checked class="hidden" onchange="updatePaymentStyle()">
+                            <i class="fa-solid fa-credit-card text-brand-orange text-xl"></i>
+                            <span class="text-xs font-bold text-gray-800">Card</span>
+                        </label>
+                        <label class="cursor-pointer border-2 border-gray-200 p-3 rounded-2xl flex flex-col items-center justify-center text-center gap-1 payment-radio-label">
+                            <input type="radio" name="payment" value="upi" class="hidden" onchange="updatePaymentStyle()">
+                            <i class="fa-solid fa-qrcode text-gray-600 text-xl"></i>
+                            <span class="text-xs font-bold text-gray-800">UPI / QR</span>
+                        </label>
+                        <label class="cursor-pointer border-2 border-gray-200 p-3 rounded-2xl flex flex-col items-center justify-center text-center gap-1 payment-radio-label">
+                            <input type="radio" name="payment" value="cod" class="hidden" onchange="updatePaymentStyle()">
+                            <i class="fa-solid fa-money-bill-wave text-gray-600 text-xl"></i>
+                            <span class="text-xs font-bold text-gray-800">COD</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Final Pay Button -->
+                <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-gray-500">Grand Total</span>
+                        <p id="chk-final-total" class="text-2xl font-black text-brand-orange">$0.00</p>
+                    </div>
+                    <button type="submit" class="bg-gradient-to-r from-brand-orange to-brand-red text-white font-extrabold px-8 py-3.5 rounded-2xl shadow-xl hover:scale-105 transition-all text-sm">
+                        Place Order
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ORDER SUCCESS MODAL -->
+    <div id="order-success-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white max-w-md w-full rounded-3xl p-8 shadow-2xl text-center space-y-4">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-lg">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-black text-gray-900">Order Confirmed!</h3>
+            <p class="text-sm text-gray-600">Your food is being prepared with care and will be delivered shortly.</p>
+            
+            <div class="bg-gray-50 p-4 rounded-2xl text-left text-xs space-y-2 border border-gray-200">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Order ID:</span>
+                    <span id="success-order-id" class="font-bold text-gray-800">#FD-99823</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Estimated Delivery:</span>
+                    <span class="font-bold text-brand-orange">25 - 30 Minutes</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Payment Status:</span>
+                    <span class="font-bold text-green-600">Simulated Success</span>
+                </div>
+            </div>
+
+            <button onclick="closeSuccessModal()" class="w-full bg-brand-orange hover:bg-brand-red text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-sm">
+                Back to Explore Food
+            </button>
+        </div>
+    </div>
+
+    <!-- WISHLIST MODAL -->
+    <div id="wishlist-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white max-w-lg w-full rounded-3xl shadow-2xl overflow-hidden">
+            <div class="bg-brand-cream p-6 border-b border-orange-100 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-heart text-brand-red text-2xl"></i>
+                    <h3 class="text-xl font-black text-gray-900">Your Favorites</h3>
+                </div>
+                <button onclick="toggleWishlistModal()" class="text-gray-400 hover:text-gray-600 text-2xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="wishlist-container" class="p-6 max-h-96 overflow-y-auto space-y-4">
+                <!-- Dynamically filled -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION (LOGIN / REGISTER) MODAL -->
+    <div id="auth-modal" class="fixed inset-0 z-50 hidden overflow-y-auto bg-black/60 backdrop-blur-sm p-4 flex items-center justify-center">
+        <div class="bg-white max-w-md w-full rounded-3xl shadow-2xl p-6 sm:p-8 relative">
+            <button onclick="closeAuthModal()" class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 text-2xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Auth Tabs -->
+            <div class="flex gap-4 border-b border-gray-200 pb-3 mb-6">
+                <button id="login-tab-btn" onclick="switchAuthTab('login')" class="text-lg font-extrabold text-brand-orange border-b-2 border-brand-orange pb-1">Login</button>
+                <button id="register-tab-btn" onclick="switchAuthTab('register')" class="text-lg font-bold text-gray-400 hover:text-gray-600 pb-1">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="login-form" onsubmit="handleAuthSubmit(event, 'login')" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Email</label>
+                    <input type="email" required placeholder="alex@example.com" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                </div>
+                <button type="submit" class="w-full bg-brand-orange hover:bg-brand-red text-white font-bold py-3.5 rounded-xl transition-all shadow-md">
+                    Login to Account
+                </button>
+            </form>
+
+            <!-- Register Form (hidden initially) -->
+            <form id="register-form" onsubmit="handleAuthSubmit(event, 'register')" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Full Name</label>
+                    <input type="text" required placeholder="Alex Smith" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Email</label>
+                    <input type="email" required placeholder="alex@example.com" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 uppercase mb-1">Create Password</label>
+                    <input type="password" required placeholder="••••••••" class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:outline-none focus:border-brand-orange">
+                </div>
+                <button type="submit" class="w-full bg-brand-orange hover:bg-brand-red text-white font-bold py-3.5 rounded-xl transition-all shadow-md">
+                    Create Account
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* ==========================================================================
+           1. SAMPLE DATA
+           ========================================================================== */
+        const RESTAURANTS = [
+            {
+                id: 'r1',
+                name: 'The Pizza Kingdom',
+                category: 'italian',
+                rating: '4.8',
+                time: '20-30 min',
+                priceRange: '$$',
+                image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80',
+                tag: 'Popular Italian'
+            },
+            {
+                id: 'r2',
+                name: 'Burger & Co.',
+                category: 'fastfood',
+                rating: '4.7',
+                time: '15-25 min',
+                priceRange: '$',
+                image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
+                tag: 'Juicy Burgers'
+            },
+            {
+                id: 'r3',
+                name: 'Royal Biryani House',
+                category: 'indian',
+                rating: '4.9',
+                time: '30-40 min',
+                priceRange: '$$$',
+                image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80',
+                tag: 'Authentic Spices'
+            }
+        ];
+
+        const FOOD_ITEMS = [
+            {
+                id: 'f1',
+                name: 'Pepperoni Supreme Pizza',
+                category: 'Pizza',
+                price: 14.99,
+                rating: 4.8,
+                image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=600&q=80',
+                desc: 'Loaded with double pepperoni, mozzarella, and house-made marinara sauce.'
+            },
+            {
+                id: 'f2',
+                name: 'Truffle Mushroom Pizza',
+                category: 'Pizza',
+                price: 16.50,
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80',
+                desc: 'Wild mushrooms, truffle oil drizzled over melted fontina cheese.'
+            },
+            {
+                id: 'f3',
+                name: 'Double Bacon Smash Burger',
+                category: 'Burgers',
+                price: 11.99,
+                rating: 4.7,
+                image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80',
+                desc: 'Two crispy beef patties, smoky bacon, cheddar, & secret burger sauce.'
+            },
+            {
+                id: 'f4',
+                name: 'Classic Veggie Burger',
+                category: 'Burgers',
+                price: 9.99,
+                rating: 4.5,
+                image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80',
+                desc: 'Grilled black bean & quinoa patty topped with avocado and sprouts.'
+            },
+            {
+                id: 'f5',
+                name: 'Hyderabadi Chicken Biryani',
+                category: 'Biryani',
+                price: 15.99,
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=600&q=80',
+                desc: 'Aromatic basmati rice cooked with marinated chicken, saffron, and mint.'
+            },
+            {
+                id: 'f6',
+                name: 'Mutton Dum Biryani',
+                category: 'Biryani',
+                price: 18.50,
+                rating: 4.8,
+                image: 'https://images.unsplash.com/photo-1633945274405-b6c8069047b0?auto=format&fit=crop&w=600&q=80',
+                desc: 'Slow-cooked tender mutton layered with fragrant spices and caramelized onions.'
+            },
+            {
+                id: 'f7',
+                name: 'Molten Chocolate Lava Cake',
+                category: 'Desserts',
+                price: 6.99,
+                rating: 4.9,
+                image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80',
+                desc: 'Warm dark chocolate cake with a gooey oozing chocolate center.'
+            },
+            {
+                id: 'f8',
+                name: 'Iced Caramel Macchiato',
+                category: 'Drinks',
+                price: 4.99,
+                rating: 4.6,
+                image: 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=600&q=80',
+                desc: 'Espresso with vanilla syrup, cold milk, and rich caramel drizzle.'
+            }
+        ];
+
+        let INITIAL_REVIEWS = [
+            { name: 'Sarah Jenkins', rating: 5, text: 'Fast delivery! Pizza was piping hot and cheese pull was unreal. Highly recommended.', date: '2 hours ago' },
+            { name: 'Michael Chang', rating: 5, text: 'The Chicken Biryani was super flavorful. Delivered in 25 mins flat.', date: '1 day ago' },
+            { name: 'Emily R.', rating: 4, text: 'Burgers are amazing, loved the extra dip sauce. Will order again!', date: '3 days ago' }
+        ];
+
+        /* ==========================================================================
+           2. STATE & LOCALSTORAGE MANAGEMENT
+           ========================================================================== */
+        let cart = JSON.parse(localStorage.getItem('flavorDash_cart')) || [];
+        let wishlist = JSON.parse(localStorage.getItem('flavorDash_wishlist')) || [];
+        let activeDiscount = 0; // Discount percentage
+        let activeCategory = 'All';
+        let searchQuery = '';
+        let currentUser = JSON.parse(localStorage.getItem('flavorDash_user')) || null;
+
+        /* Save state to localStorage */
+        function saveCart() {
+            localStorage.setItem('flavorDash_cart', JSON.stringify(cart));
+            updateCartUI();
+        }
+
+        function saveWishlist() {
+            localStorage.setItem('flavorDash_wishlist', JSON.stringify(wishlist));
+            updateWishlistUI();
+            renderFoodGrid();
+        }
+
+        /* ==========================================================================
+           3. INITIALIZATION & RENDER FUNCTIONS
+           ========================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderRestaurants('all');
+            renderFoodGrid();
+            renderReviews();
+            updateCartUI();
+            updateWishlistUI();
+            checkUserAuth();
+
+            // Window Scroll Listener for Back-To-Top button visibility
+            window.addEventListener('scroll', () => {
+                const btt = document.getElementById('back-to-top');
+                if (window.scrollY > 400) {
+                    btt.classList.remove('hidden');
+                } else {
+                    btt.classList.add('hidden');
+                }
+            });
+        });
+
+        /* Smooth Nav scroll */
+        function navTo(sectionId) {
+            const elem = document.getElementById(sectionId);
+            if(elem) {
+                elem.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        /* Render Restaurants Cards */
+        function renderRestaurants(filter) {
+            const container = document.getElementById('restaurants-grid');
+            const items = filter === 'all' ? RESTAURANTS : RESTAURANTS.filter(r => r.category === filter);
+            
+            container.innerHTML = items.map(r => `
+                <div class="bg-white rounded-3xl overflow-hidden shadow-md border border-orange-100 hover:shadow-xl transition-all duration-300 group">
+                    <div class="relative overflow-hidden h-48">
+                        <img src="${r.image}" alt="${r.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-brand-orange text-xs font-bold px-3 py-1 rounded-full shadow-md">
+                            ${r.tag}
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-extrabold text-xl text-gray-900 group-hover:text-brand-orange transition-colors">${r.name}</h3>
+                            <span class="bg-green-100 text-green-800 text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1">
+                                <i class="fa-solid fa-star text-xs"></i> ${r.rating}
+                            </span>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs font-medium text-gray-500 mt-4">
+                            <span class="flex items-center gap-1"><i class="fa-regular fa-clock text-brand-orange"></i> ${r.time}</span>
+                            <span>•</span>
+                            <span>${r.priceRange}</span>
+                            <span>•</span>
+                            <span class="capitalize">${r.category}</span>
+                        </div>
+                        <button onclick="filterByRestaurantCategory('${r.category}')" class="mt-6 w-full bg-orange-50 hover:bg-brand-orange hover:text-white text-brand-orange font-bold py-2.5 rounded-xl transition-all text-sm flex items-center justify-center gap-2">
+                            View Menu <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterRestaurants(filter) {
+            document.querySelectorAll('.rest-filter-btn').forEach(btn => {
+                if (btn.dataset.filter === filter) {
+                    btn.className = "rest-filter-btn px-4 py-2 rounded-xl font-medium text-sm transition-all bg-brand-orange text-white";
+                } else {
+                    btn.className = "rest-filter-btn px-4 py-2 rounded-xl font-medium text-sm transition-all bg-gray-100 text-gray-600 hover:bg-orange-50";
+                }
+            });
+            renderRestaurants(filter);
+        }
+
+        /* Filter Food Grid Functionality */
+        function renderFoodGrid() {
+            const container = document.getElementById('food-grid');
+            
+            let filtered = FOOD_ITEMS;
+            if (activeCategory !== 'All') {
+                filtered = filtered.filter(item => item.category.toLowerCase() === activeCategory.toLowerCase());
+            }
+
+            if (searchQuery.trim() !== '') {
+                filtered = filtered.filter(item => 
+                    item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                    item.desc.toLowerCase().includes(searchQuery.toLowerCase())
+                );
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-full text-center py-12">
+                        <p class="text-4xl mb-2">🔍</p>
+                        <p class="text-lg font-bold text-gray-700">No delicious food items found</p>
+                        <p class="text-sm text-gray-400">Try adjusting your search terms or active category filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filtered.map(food => {
+                const isFav = wishlist.includes(food.id);
+                return `
+                    <div class="bg-white rounded-3xl p-4 shadow-md border border-orange-100 flex flex-col justify-between hover:shadow-xl transition-all duration-300 relative group">
+                        <!-- Fav Button -->
+                        <button onclick="toggleWishlist('${food.id}')" class="absolute top-6 right-6 z-10 w-9 h-9 rounded-full bg-white/80 backdrop-blur-md text-gray-400 hover:text-brand-red flex items-center justify-center shadow-md transition-all ${isFav ? 'text-brand-red' : ''}">
+                            <i class="fa-solid fa-heart ${isFav ? 'text-brand-red' : ''}"></i>
+                        </button>
+
+                        <div>
+                            <div class="relative h-44 rounded-2xl overflow-hidden mb-4">
+                                <img src="${food.image}" alt="${food.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <span class="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-lg">
+                                    ★ ${food.rating}
+                                </span>
+                            </div>
+                            <h3 class="font-extrabold text-lg text-gray-900 leading-snug">${food.name}</h3>
+                            <p class="text-xs text-gray-500 mt-1 line-clamp-2">${food.desc}</p>
+                        </div>
+
+                        <div class="mt-5 pt-3 border-t border-gray-100 flex items-center justify-between">
+                            <span class="text-xl font-black text-brand-orange">$${food.price.toFixed(2)}</span>
+                            <button onclick="addToCart('${food.id}')" class="bg-brand-orange hover:bg-brand-red text-white font-bold px-4 py-2 rounded-xl text-xs shadow-md transition-all flex items-center gap-1.5 active:scale-95">
+                                <i class="fa-solid fa-plus"></i> Add To Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        /* Category Filter trigger */
+        function filterCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                if(btn.dataset.cat === cat) {
+                    btn.className = "cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-gradient-to-r from-brand-orange to-brand-red text-white";
+                } else {
+                    btn.className = "cat-btn flex items-center gap-2 px-5 py-3 rounded-2xl font-semibold shadow-sm transition-all bg-white text-gray-700 hover:bg-orange-50 border border-orange-100";
+                }
+            });
+            renderFoodGrid();
+        }
+
+        function filterByRestaurantCategory(cat) {
+            if (cat === 'fastfood') activeCategory = 'Burgers';
+            else if (cat === 'italian') activeCategory = 'Pizza';
+            else if (cat === 'indian') activeCategory = 'Biryani';
+            filterCategory(activeCategory);
+            navTo('menu');
+        }
+
+        /* Search Actions */
+        function handleSearchFromHero() {
+            const input = document.getElementById('hero-search-input');
+            searchQuery = input.value;
+            if(searchQuery.trim() !== '') {
+                document.getElementById('search-status').classList.remove('hidden');
+                document.getElementById('search-status-text').innerText = `Showing results for "${searchQuery}"`;
+            }
+            renderFoodGrid();
+            navTo('menu');
+        }
+
+        function clearSearchFilter() {
+            searchQuery = '';
+            document.getElementById('hero-search-input').value = '';
+            document.getElementById('search-status').classList.add('hidden');
+            renderFoodGrid();
+        }
+
+        /* ==========================================================================
+           4. CART OPERATIONS
+           ========================================================================== */
+        function addToCart(foodId) {
+            const food = FOOD_ITEMS.find(f => f.id === foodId);
+            const existingIndex = cart.findIndex(ci => ci.id === foodId);
+
+            if (existingIndex > -1) {
+                cart[existingIndex].qty += 1;
+            } else {
+                cart.push({ ...food, qty: 1 });
+            }
+
+            saveCart();
+            showToast(`Added "${food.name}" to cart!`);
+            
+            // Badge Bounce Effect
+            const badge = document.getElementById('cart-badge');
+            badge.classList.add('badge-bounce');
+            setTimeout(() => badge.classList.remove('badge-bounce'), 500);
+        }
+
+        function changeQty(foodId, delta) {
+            const index = cart.findIndex(ci => ci.id === foodId);
+            if (index > -1) {
+                cart[index].qty += delta;
+                if (cart[index].qty <= 0) {
+                    cart.splice(index, 1);
+                }
+                saveCart();
+            }
+        }
+
+        function removeFromCart(foodId) {
+            cart = cart.filter(ci => ci.id !== foodId);
+            saveCart();
+            showToast('Item removed from cart.');
+        }
+
+        function clearCartConfirm() {
+            if (cart.length === 0) return;
+            if (confirm('Are you sure you want to clear your cart?')) {
+                cart = [];
+                activeDiscount = 0;
+                document.getElementById('applied-discount-tag').classList.add('hidden');
+                saveCart();
+                showToast('Cart cleared.');
+            }
+        }
+
+        function updateCartUI() {
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-badge').innerText = totalQty;
+
+            const container = document.getElementById('cart-items-container');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-6xl mb-3 text-orange-200"></i>
+                        <p class="font-bold text-gray-600">Your cart is currently empty</p>
+                        <p class="text-xs">Add tasty items from the menu to get started.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between bg-orange-50/50 p-3 rounded-2xl border border-orange-100">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl">
+                        <div class="flex-1 px-3">
+                            <h4 class="font-bold text-sm text-gray-900 leading-tight">${item.name}</h4>
+                            <p class="text-xs text-brand-orange font-black mt-0.5">$${(item.price * item.qty).toFixed(2)}</p>
+                        </div>
+                        <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-xl shadow-sm border border-gray-100">
+                            <button onclick="changeQty('${item.id}', -1)" class="w-6 h-6 text-xs font-bold text-gray-600 hover:text-brand-red">-</button>
+                            <span class="text-xs font-extrabold text-gray-800">${item.qty}</span>
+                            <button onclick="changeQty('${item.id}', 1)" class="w-6 h-6 text-xs font-bold text-gray-600 hover:text-green-600">+</button>
+                        </div>
+                        <button onclick="removeFromCart('${item.id}')" class="ml-2 text-gray-400 hover:text-red-500 p-1">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // Calculations
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const delivery = subtotal > 0 ? (subtotal > 25 ? 0 : 3.99) : 0;
+            const tax = subtotal * 0.08;
+            
+            const discountAmount = (subtotal * activeDiscount) / 100;
+            const total = Math.max(0, subtotal - discountAmount + delivery + tax);
+
+            document.getElementById('cart-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-delivery').innerText = delivery === 0 && subtotal > 0 ? 'FREE' : `$${delivery.toFixed(2)}`;
+            document.getElementById('cart-tax').innerText = `$${tax.toFixed(2)}`;
+            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('chk-final-total').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function openCartModal() {
+            document.getElementById('cart-modal').classList.remove('hidden');
+        }
+
+        function closeCartModal() {
+            document.getElementById('cart-modal').classList.add('hidden');
+        }
+
+        /* Coupon Application */
+        function applyCoupon() {
+            const input = document.getElementById('coupon-input').value.trim().toUpperCase();
+            if (cart.length === 0) {
+                showToast('Add items to cart before applying coupon!', 'error');
+                return;
+            }
+
+            if (input === 'WELCOME50') {
+                activeDiscount = 50;
+                showToast('50% Discount applied!');
+            } else if (input === 'FLAVOR20') {
+                activeDiscount = 20;
+                showToast('20% Discount applied!');
+            } else if (input === 'DELIVERY0') {
+                activeDiscount = 0;
+                showToast('Free delivery coupon active!');
+            } else {
+                showToast('Invalid Coupon Code', 'error');
+                return;
+            }
+
+            const tag = document.getElementById('applied-discount-tag');
+            tag.classList.remove('hidden');
+            document.getElementById('applied-discount-text').innerText = `Coupon Applied: ${input} (${activeDiscount}% OFF)`;
+            updateCartUI();
+        }
+
+        function removeCoupon() {
+            activeDiscount = 0;
+            document.getElementById('applied-discount-tag').classList.add('hidden');
+            document.getElementById('coupon-input').value = '';
+            updateCartUI();
+            showToast('Coupon removed.');
+        }
+
+        function copyCoupon(code) {
+            const temp = document.createElement('textarea');
+            temp.value = code;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            showToast(`Coupon ${code} copied to clipboard!`);
+        }
+
+        /* ==========================================================================
+           5. CHECKOUT & ORDER FLOW
+           ========================================================================== */
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!', 'error');
+                return;
+            }
+            closeCartModal();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+
+        function updatePaymentStyle() {
+            document.querySelectorAll('.payment-radio-label').forEach(label => {
+                const radio = label.querySelector('input[type="radio"]');
+                if (radio.checked) {
+                    label.classList.add('border-brand-orange', 'bg-orange-50/50');
+                    label.classList.remove('border-gray-200');
+                } else {
+                    label.classList.remove('border-brand-orange', 'bg-orange-50/50');
+                    label.classList.add('border-gray-200');
+                }
+            });
+        }
+
+        function handlePlaceOrder(event) {
+            event.preventDefault();
+
+            const randomOrderId = '#FD-' + Math.floor(10000 + Math.random() * 90000);
+            document.getElementById('success-order-id').innerText = randomOrderId;
+
+            // Reset Cart State
+            cart = [];
+            activeDiscount = 0;
+            saveCart();
+
+            closeCheckoutModal();
+            document.getElementById('order-success-modal').classList.remove('hidden');
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('order-success-modal').classList.add('hidden');
+        }
+
+        /* ==========================================================================
+           6. WISHLIST MANAGEMENT
+           ========================================================================== */
+        function toggleWishlist(foodId) {
+            const index = wishlist.indexOf(foodId);
+            if (index > -1) {
+                wishlist.splice(index, 1);
+                showToast('Removed from favorites.');
+            } else {
+                wishlist.push(foodId);
+                showToast('Added to favorites!');
+            }
+            saveWishlist();
+        }
+
+        function updateWishlistUI() {
+            const badge = document.getElementById('wishlist-badge');
+            if (wishlist.length > 0) {
+                badge.classList.remove('hidden');
+                badge.innerText = wishlist.length;
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            const container = document.getElementById('wishlist-container');
+            const items = FOOD_ITEMS.filter(f => wishlist.includes(f.id));
+
+            if (items.length === 0) {
+                container.innerHTML = `<p class="text-center text-gray-400 py-8 text-sm">No favorites added yet.</p>`;
+            } else {
+                container.innerHTML = items.map(food => `
+                    <div class="flex items-center justify-between bg-orange-50/40 p-3 rounded-2xl border border-orange-100">
+                        <img src="${food.image}" alt="${food.name}" class="w-14 h-14 object-cover rounded-xl">
+                        <div class="flex-1 px-3">
+                            <h4 class="font-bold text-sm text-gray-900">${food.name}</h4>
+                            <p class="text-xs text-brand-orange font-black">$${food.price.toFixed(2)}</p>
+                        </div>
+                        <button onclick="addToCart('${food.id}')" class="bg-brand-orange text-white text-xs font-bold px-3 py-2 rounded-xl">
+                            + Cart
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleWishlistModal() {
+            const modal = document.getElementById('wishlist-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        /* ==========================================================================
+           7. REVIEWS & FEEDBACK SYSTEM
+           ========================================================================== */
+        function renderReviews() {
+            const container = document.getElementById('reviews-list');
+            container.innerHTML = INITIAL_REVIEWS.map(rev => `
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-orange-100 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h4 class="font-extrabold text-sm text-gray-900">${rev.name}</h4>
+                        <span class="text-xs text-gray-400">${rev.date}</span>
+                    </div>
+                    <div class="text-amber-400 text-xs">
+                        ${'★'.repeat(rev.rating)}${'☆'.repeat(5 - rev.rating)}
+                    </div>
+                    <p class="text-xs text-gray-600 leading-relaxed">${rev.text}</p>
+                </div>
+            `).join('');
+        }
+
+        function handleReviewSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('review-name').value;
+            const rating = parseInt(document.getElementById('review-rating').value);
+            const text = document.getElementById('review-text').value;
+
+            INITIAL_REVIEWS.unshift({
+                name: name,
+                rating: rating,
+                text: text,
+                date: 'Just now'
+            });
+
+            renderReviews();
+            document.getElementById('review-form').reset();
+            showToast('Thank you! Your review has been published.');
+        }
+
+        /* ==========================================================================
+           8. USER AUTHENTICATION SIMULATION
+           ========================================================================== */
+        function openAuthModal() {
+            document.getElementById('auth-modal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').classList.add('hidden');
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('login-form');
+            const regForm = document.getElementById('register-form');
+            const loginBtn = document.getElementById('login-tab-btn');
+            const regBtn = document.getElementById('register-tab-btn');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                loginBtn.className = "text-lg font-extrabold text-brand-orange border-b-2 border-brand-orange pb-1";
+                regBtn.className = "text-lg font-bold text-gray-400 hover:text-gray-600 pb-1";
+            } else {
+                loginForm.classList.add('hidden');
+                regForm.classList.remove('hidden');
+                regBtn.className = "text-lg font-extrabold text-brand-orange border-b-2 border-brand-orange pb-1";
+                loginBtn.className = "text-lg font-bold text-gray-400 hover:text-gray-600 pb-1";
+            }
+        }
+
+        function handleAuthSubmit(event, type) {
+            event.preventDefault();
+            currentUser = { name: type === 'login' ? 'Alex Smith' : 'New User' };
+            localStorage.setItem('flavorDash_user', JSON.stringify(currentUser));
+            checkUserAuth();
+            closeAuthModal();
+            showToast(`Successfully ${type === 'login' ? 'Logged In' : 'Registered'}!`);
+        }
+
+        function checkUserAuth() {
+            const btn = document.getElementById('auth-btn');
+            if (currentUser) {
+                btn.innerHTML = `<i class="fa-solid fa-user mr-1"></i> ${currentUser.name.split(' ')[0]}`;
+                btn.onclick = logoutUser;
+            } else {
+                btn.innerText = 'Login';
+                btn.onclick = openAuthModal;
+            }
+        }
+
+        function logoutUser() {
+            if (confirm('Do you want to log out?')) {
+                currentUser = null;
+                localStorage.removeItem('flavorDash_user');
+                checkUserAuth();
+                showToast('Logged out successfully.');
+            }
+        }
+
+        /* ==========================================================================
+           9. HELPERS & UTILITIES
+           ========================================================================== */
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('mobile-menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = "fa-solid fa-bars text-2xl";
+            } else {
+                icon.className = "fa-solid fa-xmark text-2xl";
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `pointer-events-auto flex items-center gap-3 px-5 py-3.5 rounded-2xl shadow-xl text-white font-bold text-xs transform transition-all duration-300 translate-y-5 opacity-0 ${
+                type === 'error' ? 'bg-red-600' : 'bg-gray-900'
+            }`;
+            
+            toast.innerHTML = `
+                <i class="fa-solid ${type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check text-brand-orange'} text-base"></i>
+                <span>${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-5', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

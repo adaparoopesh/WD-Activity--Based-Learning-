@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FITZONE — Premium Fitness Center & Gym</title>
+    <meta name="description" content="Build your stronger self at FITZONE. Elite trainers, state-of-the-art equipment, flexible membership plans, and functional fitness classes.">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#FF2E4C',
+                            redhover: '#E02440',
+                            dark: '#0B0F19',
+                            card: '#121826',
+                            cardborder: '#1E293B',
+                            accent: '#22C55E'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Oswald:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0B0F19;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+        .font-display {
+            font-family: 'Oswald', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1E293B;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF2E4C;
+        }
+        .glass-nav {
+            background: rgba(11, 15, 25, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FFFFFF 0%, #9CA3AF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .text-gradient-red {
+            background: linear-gradient(135deg, #FF2E4C 0%, #FF758C 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .modal-blur {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="bg-brand-dark text-gray-100 antialiased selection:bg-brand-red selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-40 glass-nav border-b border-brand-cardborder transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#home" class="flex items-center gap-2 group">
+                <div class="w-10 h-10 bg-brand-red rounded-lg flex items-center justify-center transform group-hover:rotate-6 transition-transform duration-300">
+                    <i class="fa-solid font-bold text-xl text-white fa-dumbbell"></i>
+                </div>
+                <span class="font-display text-2xl font-bold tracking-wider text-white">FIT<span class="text-brand-red">ZONE</span></span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden lg:flex items-center space-x-7 font-medium text-sm tracking-wide text-gray-300">
+                <a href="#home" class="hover:text-brand-red transition-colors duration-200 py-1">Home</a>
+                <a href="#about" class="hover:text-brand-red transition-colors duration-200 py-1">About Us</a>
+                <a href="#programs" class="hover:text-brand-red transition-colors duration-200 py-1">Programs</a>
+                <a href="#trainers" class="hover:text-brand-red transition-colors duration-200 py-1">Trainers</a>
+                <a href="#membership" class="hover:text-brand-red transition-colors duration-200 py-1">Membership</a>
+                <a href="#classes" class="hover:text-brand-red transition-colors duration-200 py-1">Classes</a>
+                <a href="#contact" class="hover:text-brand-red transition-colors duration-200 py-1">Contact</a>
+            </div>
+
+            <!-- Join Now CTA Desktop -->
+            <div class="hidden lg:flex items-center">
+                <a href="#registration" onclick="selectPlan('Pro Plan')" class="bg-brand-red hover:bg-brand-redhover text-white font-semibold px-6 py-2.5 rounded-full shadow-lg shadow-brand-red/20 transition-all duration-300 hover:scale-105 active:scale-95 text-sm uppercase tracking-wider">
+                    Join Now
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Toggle -->
+            <div class="lg:hidden flex items-center">
+                <button id="mobile-menu-btn" type="button" aria-label="Toggle Navigation Menu" class="text-gray-300 hover:text-white focus:outline-none p-2 rounded-lg bg-brand-card border border-brand-cardborder">
+                    <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Drawer -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-brand-dark/95 border-b border-brand-cardborder px-4 pt-3 pb-6 space-y-3 font-medium">
+            <a href="#home" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">Home</a>
+            <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">About Us</a>
+            <a href="#programs" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">Programs</a>
+            <a href="#trainers" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">Trainers</a>
+            <a href="#membership" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">Membership</a>
+            <a href="#classes" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">Classes</a>
+            <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-md hover:bg-brand-card hover:text-brand-red transition-colors">Contact</a>
+            <a href="#registration" onclick="selectPlan('Pro Plan'); toggleMobileMenu();" class="block text-center bg-brand-red hover:bg-brand-redhover text-white font-semibold py-3 rounded-xl mt-4 transition-all">
+                Join Now
+            </a>
+        </div>
+    </nav>
+
+    <!-- SECTION A: HERO SECTION -->
+    <section id="home" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <!-- Background Overlay & Image -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1920&auto=format&fit=crop" alt="Gym Hero Background" class="w-full h-full object-cover object-center filter brightness-40 scale-105 transition-transform duration-1000" id="hero-img">
+            <div class="absolute inset-0 bg-gradient-to-t from-brand-dark via-brand-dark/60 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-brand-dark/90 via-transparent to-brand-dark/90"></div>
+        </div>
+
+        <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center pt-12 pb-16">
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-card/80 border border-brand-cardborder text-brand-red text-xs font-semibold uppercase tracking-widest mb-6 animate-pulse">
+                <i class="fa-solid fa-fire"></i> Transform Your Body & Mind
+            </div>
+            
+            <h1 class="font-display text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight text-white mb-6 leading-none">
+                BUILD YOUR <span class="text-brand-red inline-block">STRONGER</span> SELF.
+            </h1>
+            
+            <p class="text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 font-normal leading-relaxed">
+                Train hard. Stay focused. Achieve more. Experience elite personal training, high-tech facilities, and customized workout programs tailored for performance.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-md mx-auto">
+                <a href="#registration" onclick="selectPlan('Pro Plan')" class="w-full sm:w-auto bg-brand-red hover:bg-brand-redhover text-white font-bold px-8 py-4 rounded-xl shadow-xl shadow-brand-red/30 transition-all duration-300 hover:scale-105 uppercase tracking-wider text-sm flex items-center justify-center gap-2">
+                    Join Now <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="#programs" class="w-full sm:w-auto bg-brand-card hover:bg-gray-800 text-white font-semibold px-8 py-4 rounded-xl border border-brand-cardborder transition-all duration-300 hover:scale-105 text-sm uppercase tracking-wider flex items-center justify-center">
+                    Explore Programs
+                </a>
+                <button onclick="openModal('modal-free-trial')" class="w-full sm:w-auto bg-transparent hover:bg-white/10 text-gray-300 hover:text-white font-medium px-6 py-4 rounded-xl border border-gray-700 transition-all text-sm uppercase tracking-wider">
+                    Book Free Trial
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 text-xs flex flex-col items-center gap-2 opacity-70 hover:opacity-100 transition-opacity">
+            <span>SCROLL DOWN</span>
+            <i class="fa-solid fa-chevron-down animate-bounce text-brand-red"></i>
+        </div>
+    </section>
+
+    <!-- SECTION B: ABOUT OUR GYM -->
+    <section id="about" class="py-24 bg-brand-dark border-t border-brand-cardborder/40 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+                
+                <!-- Image Side -->
+                <div class="relative">
+                    <div class="relative z-10 rounded-2xl overflow-hidden shadow-2xl border border-brand-cardborder group">
+                        <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=800&auto=format&fit=crop" alt="FITZONE Gym Interior" class="w-full h-[450px] object-cover group-hover:scale-105 transition-transform duration-700">
+                    </div>
+                    <div class="absolute -bottom-6 -right-6 z-20 bg-brand-card border border-brand-cardborder p-6 rounded-2xl shadow-2xl hidden sm:block">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 bg-brand-red/20 rounded-xl flex items-center justify-center text-brand-red text-2xl font-bold">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <div>
+                                <div class="font-display text-2xl font-bold text-white">#1 Rated Gym</div>
+                                <div class="text-xs text-gray-400">Voted Top Fitness Club 2025</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute -top-6 -left-6 w-32 h-32 bg-brand-red/10 rounded-full blur-3xl pointer-events-none"></div>
+                </div>
+
+                <!-- Text Content Side -->
+                <div>
+                    <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">About Our Gym</span>
+                    <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 mb-6 uppercase">
+                        Elevate Your Performance & Lifestyle
+                    </h2>
+                    <p class="text-gray-300 leading-relaxed mb-6">
+                        At FITZONE, we deliver an unmatched fitness experience. Combining world-class equipment, certified professional coaching, and a driven community, we help you break limits and construct your ideal physique.
+                    </p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-8">
+                        Whether your objective is pure strength, fat reduction, or athletic endurance, our modern, hygienic facilities provide the foundation for sustainable physical evolution.
+                    </p>
+
+                    <!-- Statistics Cards Grid with Animated Counters -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4 border-t border-brand-cardborder">
+                        <div class="bg-brand-card border border-brand-cardborder p-4 rounded-xl text-center">
+                            <div class="font-display text-3xl font-bold text-brand-red counter" data-target="2500">0</div>
+                            <div class="text-xs text-gray-400 font-medium mt-1">Total Members</div>
+                        </div>
+                        <div class="bg-brand-card border border-brand-cardborder p-4 rounded-xl text-center">
+                            <div class="font-display text-3xl font-bold text-brand-red counter" data-target="35">0</div>
+                            <div class="text-xs text-gray-400 font-medium mt-1">Expert Trainers</div>
+                        </div>
+                        <div class="bg-brand-card border border-brand-cardborder p-4 rounded-xl text-center">
+                            <div class="font-display text-3xl font-bold text-brand-red counter" data-target="48">0</div>
+                            <div class="text-xs text-gray-400 font-medium mt-1">Workout Programs</div>
+                        </div>
+                        <div class="bg-brand-card border border-brand-cardborder p-4 rounded-xl text-center">
+                            <div class="font-display text-3xl font-bold text-brand-red counter" data-target="12">0</div>
+                            <div class="text-xs text-gray-400 font-medium mt-1">Years Experience</div>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-right">
+                        <span class="text-[10px] text-gray-500 italic">* Demo metrics verified quarterly</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION C: WORKOUT PROGRAMS -->
+    <section id="programs" class="py-24 bg-brand-dark/50 border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Tailored Fitness</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">Workout Programs</h2>
+                <p class="text-gray-400 mt-4 text-sm sm:text-base">Targeted training solutions engineered for beginners, athletes, and fitness enthusiasts.</p>
+            </div>
+
+            <!-- Programs Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="programs-container">
+                <!-- Javascript dynamic population for clean code structure -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION D: PERSONAL TRAINERS -->
+    <section id="trainers" class="py-24 bg-brand-dark border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Expert Guidance</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">Elite Coaches</h2>
+                <p class="text-gray-400 mt-4 text-sm sm:text-base">Train alongside industry-certified coaches dedicated to pushing your limits safely and efficiently.</p>
+            </div>
+
+            <!-- Trainers Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6" id="trainers-container">
+                <!-- JavaScript dynamic population -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION E: MEMBERSHIP PLANS -->
+    <section id="membership" class="py-24 bg-brand-dark/50 border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Flexible Options</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">Membership Plans</h2>
+                <p class="text-gray-400 mt-4 text-sm">Transparent pricing with no hidden lock-in contracts. Upgrade or cancel anytime.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 items-stretch">
+                <!-- Basic Plan -->
+                <div class="bg-brand-card border border-brand-cardborder rounded-2xl p-8 flex flex-col justify-between hover:border-gray-600 transition-all duration-300">
+                    <div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">Essential</span>
+                        <h3 class="font-display text-2xl font-bold text-white mt-1">Basic Plan</h3>
+                        <div class="mt-4 flex items-baseline">
+                            <span class="font-display text-4xl font-extrabold text-white">$29</span>
+                            <span class="text-gray-400 ml-2 text-sm">/ month</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">Billed monthly (Demo rates). Cancel anytime.</p>
+
+                        <ul class="mt-8 space-y-4 text-sm text-gray-300">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Standard Gym Floor Access</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Modern Cardio Equipment</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Free Weights Area</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Locker Room & Showers</li>
+                            <li class="flex items-center gap-3 text-gray-600 line-through"><i class="fa-solid fa-xmark text-gray-600"></i> Group Classes Access</li>
+                            <li class="flex items-center gap-3 text-gray-600 line-through"><i class="fa-solid fa-xmark text-gray-600"></i> Trainer Consultation</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectPlan('Basic Plan')" class="mt-8 w-full bg-brand-cardborder hover:bg-gray-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm uppercase tracking-wider">
+                        Choose Basic Plan
+                    </button>
+                </div>
+
+                <!-- Pro Plan (Recommended) -->
+                <div class="bg-brand-card border-2 border-brand-red rounded-2xl p-8 flex flex-col justify-between relative shadow-2xl shadow-brand-red/10 transform lg:-translate-y-2">
+                    <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-red text-white text-[11px] font-extrabold uppercase px-4 py-1 rounded-full tracking-widest shadow-md">
+                        Most Popular
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-brand-red uppercase tracking-widest">Recommended</span>
+                        <h3 class="font-display text-2xl font-bold text-white mt-1">Pro Plan</h3>
+                        <div class="mt-4 flex items-baseline">
+                            <span class="font-display text-5xl font-extrabold text-white">$59</span>
+                            <span class="text-gray-400 ml-2 text-sm">/ month</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">Billed monthly (Demo rates). Cancel anytime.</p>
+
+                        <ul class="mt-8 space-y-4 text-sm text-gray-200">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Full 24/7 Gym Floor Access</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Unlimited Group Fitness Classes</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Personalized Workout Routine</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Locker Room & Steam Sauna</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> 1 Monthly Trainer Check-in</li>
+                            <li class="flex items-center gap-3 text-gray-600 line-through"><i class="fa-solid fa-xmark text-gray-600"></i> 1-on-1 Dedicated Trainer</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectPlan('Pro Plan')" class="mt-8 w-full bg-brand-red hover:bg-brand-redhover text-white font-bold py-3.5 rounded-xl shadow-lg shadow-brand-red/20 transition-all text-sm uppercase tracking-wider">
+                        Choose Pro Plan
+                    </button>
+                </div>
+
+                <!-- Elite Plan -->
+                <div class="bg-brand-card border border-brand-cardborder rounded-2xl p-8 flex flex-col justify-between hover:border-gray-600 transition-all duration-300">
+                    <div>
+                        <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">VIP Pass</span>
+                        <h3 class="font-display text-2xl font-bold text-white mt-1">Elite Plan</h3>
+                        <div class="mt-4 flex items-baseline">
+                            <span class="font-display text-4xl font-extrabold text-white">$99</span>
+                            <span class="text-gray-400 ml-2 text-sm">/ month</span>
+                        </div>
+                        <p class="text-xs text-gray-400 mt-2">Billed monthly (Demo rates). Cancel anytime.</p>
+
+                        <ul class="mt-8 space-y-4 text-sm text-gray-300">
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> VIP All-Access Pass (24/7)</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> All Group & Premium Classes</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Weekly 1-on-1 Personal Training</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Custom Nutrition & Meal Plans</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Priority Class Booking Access</li>
+                            <li class="flex items-center gap-3"><i class="fa-solid fa-check text-brand-red"></i> Free Guest Pass (2 per month)</li>
+                        </ul>
+                    </div>
+                    <button onclick="selectPlan('Elite Plan')" class="mt-8 w-full bg-brand-cardborder hover:bg-gray-700 text-white font-bold py-3.5 rounded-xl transition-colors text-sm uppercase tracking-wider">
+                        Choose Elite Plan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION F: FITNESS FACILITIES -->
+    <section class="py-24 bg-brand-dark border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Premium Equipment</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">World-Class Facilities</h2>
+                <p class="text-gray-400 mt-4 text-sm">Explore our ultra-modern zones engineered for maximum comfort, safety, and training performance.</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6" id="facilities-container">
+                <!-- Dynamically Rendered Facilities -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION G: CLASS SCHEDULE & TIMETABLE -->
+    <section id="classes" class="py-24 bg-brand-dark/50 border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Weekly Timetable</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">Workout Class Schedule</h2>
+                <p class="text-gray-400 mt-4 text-sm">Filter by day or workout discipline to reserve your session in advance.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-8">
+                <button onclick="filterSchedule('all', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-red text-white transition-all">All Days</button>
+                <button onclick="filterSchedule('Monday', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all">Monday</button>
+                <button onclick="filterSchedule('Tuesday', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all">Tuesday</button>
+                <button onclick="filterSchedule('Wednesday', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all">Wednesday</button>
+                <button onclick="filterSchedule('Thursday', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all">Thursday</button>
+                <button onclick="filterSchedule('Friday', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all">Friday</button>
+                <button onclick="filterSchedule('Saturday', this)" class="schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all">Saturday</button>
+            </div>
+
+            <!-- Schedule Display (Table on desktop, Cards on mobile) -->
+            <div class="bg-brand-card border border-brand-cardborder rounded-2xl overflow-hidden shadow-xl">
+                <!-- Desktop Table View -->
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-brand-cardborder/50 text-gray-300 text-xs font-bold uppercase tracking-wider border-b border-brand-cardborder">
+                                <th class="p-4">Time Slot</th>
+                                <th class="p-4">Class</th>
+                                <th class="p-4">Day</th>
+                                <th class="p-4">Trainer</th>
+                                <th class="p-4">Intensity</th>
+                                <th class="p-4 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-tbody" class="divide-y divide-brand-cardborder text-sm text-gray-200">
+                            <!-- Dynamically Generated Rows -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Mobile Cards View -->
+                <div class="md:hidden p-4 space-y-4" id="schedule-mobile-container">
+                    <!-- Dynamically Generated Cards -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION H: REGISTRATION FORM -->
+    <section id="registration" class="py-24 bg-brand-dark border-t border-brand-cardborder/40">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-card border border-brand-cardborder rounded-3xl p-6 sm:p-10 shadow-2xl relative">
+                <div class="text-center mb-8">
+                    <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Join FITZONE</span>
+                    <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mt-1 uppercase">Membership Registration</h2>
+                    <p class="text-gray-400 text-xs sm:text-sm mt-2">Fill out your information to secure your membership pass today.</p>
+                </div>
+
+                <form id="registration-form" onsubmit="handleRegistrationSubmit(event)" novalidate class="space-y-6">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <!-- Full Name -->
+                        <div>
+                            <label for="reg-name" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Full Name *</label>
+                            <input type="text" id="reg-name" required placeholder="John Doe" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Please enter your full name.</span>
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label for="reg-email" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Email Address *</label>
+                            <input type="email" id="reg-email" required placeholder="john@example.com" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Please enter a valid email address.</span>
+                        </div>
+
+                        <!-- Phone -->
+                        <div>
+                            <label for="reg-phone" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Phone Number *</label>
+                            <input type="tel" id="reg-phone" required placeholder="+1 (555) 000-0000" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Please enter a valid phone number.</span>
+                        </div>
+
+                        <!-- Age -->
+                        <div>
+                            <label for="reg-age" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Age *</label>
+                            <input type="number" id="reg-age" min="14" max="99" required placeholder="25" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Age must be between 14 and 99.</span>
+                        </div>
+
+                        <!-- Selected Plan -->
+                        <div>
+                            <label for="reg-plan" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Membership Plan *</label>
+                            <select id="reg-plan" required class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                                <option value="">Select Plan...</option>
+                                <option value="Basic Plan">Basic Plan ($29/mo)</option>
+                                <option value="Pro Plan">Pro Plan ($59/mo)</option>
+                                <option value="Elite Plan">Elite Plan ($99/mo)</option>
+                            </select>
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Please select a plan.</span>
+                        </div>
+
+                        <!-- Fitness Goal -->
+                        <div>
+                            <label for="reg-goal" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Primary Goal *</label>
+                            <select id="reg-goal" required class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                                <option value="">Select Primary Goal...</option>
+                                <option value="Muscle Gain">Muscle Building</option>
+                                <option value="Weight Loss">Weight Loss & Toning</option>
+                                <option value="Strength Training">Pure Power & Strength</option>
+                                <option value="Endurance">Cardio & Endurance</option>
+                                <option value="Flexibility">Flexibility & Health</option>
+                            </select>
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Please select your main fitness goal.</span>
+                        </div>
+                    </div>
+
+                    <!-- Preferred Start Date -->
+                    <div>
+                        <label for="reg-date" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Preferred Start Date *</label>
+                        <input type="date" id="reg-date" required class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                        <span class="error-msg text-xs text-brand-red hidden mt-1">Please select a start date.</span>
+                    </div>
+
+                    <!-- Additional Notes -->
+                    <div>
+                        <label for="reg-notes" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Additional Notes / Health Concerns</label>
+                        <textarea id="reg-notes" rows="3" placeholder="Tell us about any previous injuries or specific requirements..." class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors resize-none"></textarea>
+                    </div>
+
+                    <!-- Terms Checkbox -->
+                    <div class="flex items-start gap-3 pt-2">
+                        <input type="checkbox" id="reg-terms" required class="mt-1 w-4 h-4 rounded accent-brand-red bg-brand-dark border-brand-cardborder">
+                        <label for="reg-terms" class="text-xs text-gray-400">
+                            I agree to FITZONE's <button type="button" onclick="openModal('modal-terms')" class="text-brand-red hover:underline">Terms & Conditions</button> and <button type="button" onclick="openModal('modal-privacy')" class="text-brand-red hover:underline">Privacy Policy</button>. (Demo validation enabled).
+                        </label>
+                    </div>
+                    <span class="error-msg text-xs text-brand-red hidden block">You must agree to the terms to register.</span>
+
+                    <!-- Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center gap-4 pt-4">
+                        <button type="submit" id="reg-submit-btn" class="w-full sm:flex-1 bg-brand-red hover:bg-brand-redhover text-white font-bold py-4 rounded-xl shadow-lg shadow-brand-red/20 transition-all text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                            <span>Submit Registration</span>
+                        </button>
+                        <button type="button" onclick="resetForm('registration-form')" class="w-full sm:w-auto bg-brand-cardborder hover:bg-gray-700 text-gray-300 font-semibold px-6 py-4 rounded-xl transition-colors text-sm uppercase tracking-wider">
+                            Reset Form
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION I: FITNESS TIPS & BLOG ARTICLES -->
+    <section class="py-24 bg-brand-dark/50 border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Knowledge Hub</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">Fitness Articles & Advice</h2>
+                <p class="text-gray-400 mt-4 text-sm">Actionable nutrition, training, and recovery insights from top fitness scientists.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-container">
+                <!-- Javascript dynamic population -->
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION J: TESTIMONIALS CAROUSEL -->
+    <section class="py-24 bg-brand-dark border-t border-brand-cardborder/40">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Success Stories</span>
+                <h2 class="font-display text-4xl sm:text-5xl font-bold text-white mt-2 uppercase">Member Reviews</h2>
+            </div>
+
+            <!-- Carousel Component -->
+            <div class="relative bg-brand-card border border-brand-cardborder rounded-3xl p-8 sm:p-12 shadow-2xl">
+                <div class="flex items-center justify-between mb-8">
+                    <div class="flex items-center gap-1 text-amber-400 text-lg" id="testimonial-stars">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                    </div>
+                    <i class="fa-solid fa-quote-right text-4xl text-brand-cardborder"></i>
+                </div>
+
+                <p id="testimonial-text" class="text-gray-300 text-base sm:text-lg italic min-h-[90px] leading-relaxed">
+                    "Loading member review..."
+                </p>
+
+                <div class="flex items-center justify-between mt-8 pt-6 border-t border-brand-cardborder">
+                    <div class="flex items-center gap-4">
+                        <img id="testimonial-avatar" src="" alt="Member Avatar" class="w-12 h-12 rounded-full object-cover border border-brand-red">
+                        <div>
+                            <div id="testimonial-author" class="font-bold text-white text-base">Author Name</div>
+                            <div id="testimonial-role" class="text-xs text-brand-red">Role/Achievment</div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevTestimonial()" aria-label="Previous Review" class="w-10 h-10 rounded-full bg-brand-dark border border-brand-cardborder text-gray-300 hover:text-white hover:border-brand-red flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-chevron-left text-sm"></i>
+                        </button>
+                        <button onclick="nextTestimonial()" aria-label="Next Review" class="w-10 h-10 rounded-full bg-brand-dark border border-brand-cardborder text-gray-300 hover:text-white hover:border-brand-red flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-chevron-right text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3 text-[11px] text-gray-500 italic">* Representative feedback from registered members</div>
+        </div>
+    </section>
+
+    <!-- SECTION K: CONTACT SECTION -->
+    <section id="contact" class="py-24 bg-brand-dark/50 border-t border-brand-cardborder/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Info Side -->
+                <div>
+                    <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">Get In Touch</span>
+                    <h2 class="font-display text-4xl font-bold text-white mt-2 mb-6 uppercase">Visit FITZONE Today</h2>
+                    <p class="text-gray-400 text-sm mb-8 leading-relaxed">Have questions regarding facilities, trainer availability, or membership pricing? Drop by our physical center or send us a quick note online.</p>
+
+                    <div class="space-y-6">
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-card border border-brand-cardborder flex items-center justify-center text-brand-red shrink-0">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-wider">Gym Address</h4>
+                                <p class="text-xs text-gray-400 mt-1">100 Fitness Boulevard, Metro Athletic District, NY 10001</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-card border border-brand-cardborder flex items-center justify-center text-brand-red shrink-0">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-wider">Phone Number</h4>
+                                <p class="text-xs text-gray-400 mt-1">+1 (800) 555-FITZONE / +1 (800) 555-3489</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-card border border-brand-cardborder flex items-center justify-center text-brand-red shrink-0">
+                                <i class="fa-solid fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-wider">Email Address</h4>
+                                <p class="text-xs text-gray-400 mt-1">support@fitzone-gym-demo.com</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-xl bg-brand-card border border-brand-cardborder flex items-center justify-center text-brand-red shrink-0">
+                                <i class="fa-solid fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-white uppercase tracking-wider">Opening Hours</h4>
+                                <p class="text-xs text-gray-400 mt-1">Monday – Friday: 5:00 AM – 11:00 PM</p>
+                                <p class="text-xs text-gray-400">Saturday – Sunday: 6:00 AM – 9:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Google Maps Embed Placeholder -->
+                    <div class="mt-8 rounded-2xl overflow-hidden border border-brand-cardborder h-48 bg-brand-card relative flex items-center justify-center">
+                        <div class="text-center p-4">
+                            <i class="fa-solid fa-map-location-dot text-3xl text-brand-red mb-2"></i>
+                            <p class="text-xs font-semibold text-gray-300">Interactive Gym Location Map</p>
+                            <p class="text-[10px] text-gray-500 mt-1">100 Fitness Blvd (Map Preview Mode)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form Side -->
+                <div class="bg-brand-card border border-brand-cardborder rounded-3xl p-8 shadow-xl">
+                    <h3 class="font-display text-2xl font-bold text-white mb-6 uppercase">Send Us A Message</h3>
+                    <form id="contact-form" onsubmit="handleContactSubmit(event)" novalidate class="space-y-4">
+                        <div>
+                            <label for="contact-name" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Your Name *</label>
+                            <input type="text" id="contact-name" required placeholder="Alex Turner" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Name is required.</span>
+                        </div>
+
+                        <div>
+                            <label for="contact-email" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Your Email *</label>
+                            <input type="email" id="contact-email" required placeholder="alex@example.com" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Valid email required.</span>
+                        </div>
+
+                        <div>
+                            <label for="contact-subject" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Subject *</label>
+                            <input type="text" id="contact-subject" required placeholder="Question regarding Pro Plan" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors">
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Subject is required.</span>
+                        </div>
+
+                        <div>
+                            <label for="contact-msg" class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">Message *</label>
+                            <textarea id="contact-msg" rows="4" required placeholder="Write your inquiry here..." class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-brand-red transition-colors resize-none"></textarea>
+                            <span class="error-msg text-xs text-brand-red hidden mt-1">Message cannot be empty.</span>
+                        </div>
+
+                        <button type="submit" id="contact-submit-btn" class="w-full bg-brand-red hover:bg-brand-redhover text-white font-bold py-3.5 rounded-xl shadow-lg shadow-brand-red/20 transition-all text-sm uppercase tracking-wider">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black border-t border-brand-cardborder text-gray-400 text-xs py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
+                <!-- Col 1 -->
+                <div>
+                    <a href="#home" class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-brand-red rounded-md flex items-center justify-center text-white font-bold text-base">
+                            <i class="fa-solid fa-dumbbell"></i>
+                        </div>
+                        <span class="font-display text-xl font-bold tracking-wider text-white">FIT<span class="text-brand-red">ZONE</span></span>
+                    </a>
+                    <p class="text-gray-400 leading-relaxed mb-6">Premium fitness center equipping individuals with top-tier training methodologies, facilities, and motivation.</p>
+                    <!-- Social icons -->
+                    <div class="flex items-center gap-3">
+                        <button onclick="handleSocialClick('Instagram')" aria-label="Instagram" class="w-8 h-8 rounded-full bg-brand-card border border-brand-cardborder text-gray-400 hover:text-white hover:border-brand-red transition-all flex items-center justify-center"><i class="fa-brands fa-instagram"></i></button>
+                        <button onclick="handleSocialClick('Facebook')" aria-label="Facebook" class="w-8 h-8 rounded-full bg-brand-card border border-brand-cardborder text-gray-400 hover:text-white hover:border-brand-red transition-all flex items-center justify-center"><i class="fa-brands fa-facebook-f"></i></button>
+                        <button onclick="handleSocialClick('YouTube')" aria-label="YouTube" class="w-8 h-8 rounded-full bg-brand-card border border-brand-cardborder text-gray-400 hover:text-white hover:border-brand-red transition-all flex items-center justify-center"><i class="fa-brands fa-youtube"></i></button>
+                        <button onclick="handleSocialClick('X / Twitter')" aria-label="Twitter" class="w-8 h-8 rounded-full bg-brand-card border border-brand-cardborder text-gray-400 hover:text-white hover:border-brand-red transition-all flex items-center justify-center"><i class="fa-brands fa-x-twitter"></i></button>
+                    </div>
+                </div>
+
+                <!-- Col 2 -->
+                <div>
+                    <h4 class="font-display text-white text-sm font-bold uppercase tracking-wider mb-4">Quick Links</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#home" class="hover:text-brand-red transition-colors">Home</a></li>
+                        <li><a href="#about" class="hover:text-brand-red transition-colors">About Us</a></li>
+                        <li><a href="#programs" class="hover:text-brand-red transition-colors">Workout Programs</a></li>
+                        <li><a href="#trainers" class="hover:text-brand-red transition-colors">Personal Trainers</a></li>
+                        <li><a href="#membership" class="hover:text-brand-red transition-colors">Membership Options</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3 -->
+                <div>
+                    <h4 class="font-display text-white text-sm font-bold uppercase tracking-wider mb-4">Fitness Classes</h4>
+                    <ul class="space-y-2.5">
+                        <li><a href="#classes" onclick="filterSchedule('all', null)" class="hover:text-brand-red transition-colors">Strength & Power</a></li>
+                        <li><a href="#classes" onclick="filterSchedule('all', null)" class="hover:text-brand-red transition-colors">Cardio HIIT Conditioning</a></li>
+                        <li><a href="#classes" onclick="filterSchedule('all', null)" class="hover:text-brand-red transition-colors">Yoga & Mobility</a></li>
+                        <li><a href="#classes" onclick="filterSchedule('all', null)" class="hover:text-brand-red transition-colors">Zumba Dance Fitness</a></li>
+                        <li><a href="#classes" onclick="filterSchedule('all', null)" class="hover:text-brand-red transition-colors">CrossFit Endurance</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4 -->
+                <div>
+                    <h4 class="font-display text-white text-sm font-bold uppercase tracking-wider mb-4">Legal & Support</h4>
+                    <ul class="space-y-2.5 mb-4">
+                        <li><button onclick="openModal('modal-privacy')" class="hover:text-brand-red transition-colors text-left">Privacy Policy</button></li>
+                        <li><button onclick="openModal('modal-terms')" class="hover:text-brand-red transition-colors text-left">Terms & Conditions</button></li>
+                        <li><a href="#contact" class="hover:text-brand-red transition-colors">Contact Support</a></li>
+                    </ul>
+                    <p class="text-[11px] text-gray-500">Notice: FITZONE website is a fully interactive front-end demo application.</p>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-brand-cardborder/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p>&copy; 2026 FITZONE Gym & Fitness Center. All rights reserved.</p>
+                <button onclick="scrollToTop()" class="bg-brand-card border border-brand-cardborder hover:border-brand-red text-gray-300 hover:text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                    Back To Top <i class="fa-solid fa-arrow-up text-xs text-brand-red"></i>
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODALS SECTION -->
+
+    <!-- Modal 1: Free Trial Modal -->
+    <div id="modal-free-trial" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="bg-brand-card border border-brand-cardborder w-full max-w-lg rounded-3xl p-6 sm:p-8 relative shadow-2xl animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal('modal-free-trial')" aria-label="Close Modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-display text-2xl font-bold text-white uppercase mb-2">Book A Free Trial Pass</h3>
+            <p class="text-xs text-gray-400 mb-6">Experience FITZONE for 1 day free of charge. No credit card required.</p>
+            
+            <form id="free-trial-form" onsubmit="handleFreeTrialSubmit(event)" novalidate class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Your Full Name *</label>
+                    <input type="text" id="trial-name" required placeholder="John Smith" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Email Address *</label>
+                    <input type="email" id="trial-email" required placeholder="john@example.com" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Preferred Trial Date *</label>
+                    <input type="date" id="trial-date" required class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <button type="submit" class="w-full bg-brand-red hover:bg-brand-redhover text-white font-bold py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors mt-2">
+                    Claim Free Pass
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Book Trainer Modal -->
+    <div id="modal-trainer" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="bg-brand-card border border-brand-cardborder w-full max-w-lg rounded-3xl p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeModal('modal-trainer')" aria-label="Close Modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-display text-2xl font-bold text-white uppercase mb-1">Book Personal Trainer</h3>
+            <p class="text-xs text-gray-400 mb-6" id="trainer-modal-subtitle">Reserve a 1-on-1 session with our certified coach.</p>
+
+            <form id="trainer-form" onsubmit="handleTrainerSubmit(event)" novalidate class="space-y-4">
+                <input type="hidden" id="trainer-hidden-name" value="">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Selected Coach</label>
+                    <input type="text" id="trainer-display-name" readonly class="w-full bg-brand-dark/50 border border-brand-cardborder text-brand-red font-bold rounded-xl px-4 py-2.5 text-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Preferred Date *</label>
+                        <input type="date" id="trainer-date" required class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Preferred Time *</label>
+                        <select id="trainer-time" required class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                            <option value="">Select Time...</option>
+                            <option value="08:00 AM">08:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="05:00 PM">05:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Your Full Name *</label>
+                    <input type="text" id="trainer-client-name" required placeholder="Jane Smith" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Contact Phone *</label>
+                    <input type="tel" id="trainer-client-phone" required placeholder="+1 (555) 000-0000" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <button type="submit" class="w-full bg-brand-red hover:bg-brand-redhover text-white font-bold py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors mt-2">
+                    Confirm Trainer Booking
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: General Program / Details Modal -->
+    <div id="modal-details" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="bg-brand-card border border-brand-cardborder w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button onclick="closeModal('modal-details')" aria-label="Close Modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-details-content">
+                <!-- Javascript Injection -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Class Booking Modal -->
+    <div id="modal-class-book" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="bg-brand-card border border-brand-cardborder w-full max-w-lg rounded-3xl p-6 sm:p-8 relative shadow-2xl">
+            <button onclick="closeModal('modal-class-book')" aria-label="Close Modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-display text-2xl font-bold text-white uppercase mb-1">Class Reservation</h3>
+            <p class="text-xs text-gray-400 mb-6">Confirm your spot in this group training session.</p>
+
+            <form id="class-book-form" onsubmit="handleClassBookSubmit(event)" novalidate class="space-y-4">
+                <div class="bg-brand-dark/50 p-4 rounded-xl border border-brand-cardborder space-y-1 text-xs">
+                    <div><span class="text-gray-400">Class Name:</span> <strong id="cb-class-name" class="text-white"></strong></div>
+                    <div><span class="text-gray-400">Schedule:</span> <span id="cb-class-schedule" class="text-brand-red font-semibold"></span></div>
+                    <div><span class="text-gray-400">Trainer:</span> <span id="cb-class-trainer" class="text-gray-200"></span></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Your Full Name *</label>
+                    <input type="text" id="cb-user-name" required placeholder="Sam Wilson" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-1">Email Address *</label>
+                    <input type="email" id="cb-user-email" required placeholder="sam@example.com" class="w-full bg-brand-dark border border-brand-cardborder rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-brand-red">
+                </div>
+                <button type="submit" class="w-full bg-brand-red hover:bg-brand-redhover text-white font-bold py-3.5 rounded-xl uppercase tracking-wider text-xs transition-colors">
+                    Reserve Class Slot
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 5: Terms & Conditions Modal -->
+    <div id="modal-terms" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="bg-brand-card border border-brand-cardborder w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[80vh] overflow-y-auto">
+            <button onclick="closeModal('modal-terms')" aria-label="Close Modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-display text-2xl font-bold text-white uppercase mb-4">Terms & Conditions</h3>
+            <div class="text-xs text-gray-300 space-y-3 leading-relaxed">
+                <p><strong>1. Introduction:</strong> Welcome to FITZONE. By signing up or utilizing our services, you agree to comply with our safety guidelines and code of conduct.</p>
+                <p><strong>2. Membership Billing:</strong> Memberships are billed on a recurring monthly cycle unless canceled 7 days prior to renewal. All demo fees displayed are illustrative samples.</p>
+                <p><strong>3. Facility Rules:</strong> Proper athletic footwear and apparel are mandatory. Members must re-rack weights and wipe down equipment after use.</p>
+                <p><strong>4. Disclaimer:</strong> Physical exercise involves risk. Please consult a physician prior to commencing any high-intensity workout regime.</p>
+            </div>
+            <button onclick="closeModal('modal-terms')" class="mt-6 w-full bg-brand-cardborder text-white py-3 rounded-xl font-bold text-xs uppercase">I Understand</button>
+        </div>
+    </div>
+
+    <!-- Modal 6: Privacy Policy Modal -->
+    <div id="modal-privacy" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 modal-blur">
+        <div class="bg-brand-card border border-brand-cardborder w-full max-w-2xl rounded-3xl p-6 sm:p-8 relative shadow-2xl max-h-[80vh] overflow-y-auto">
+            <button onclick="closeModal('modal-privacy')" aria-label="Close Modal" class="absolute top-5 right-5 text-gray-400 hover:text-white text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <h3 class="font-display text-2xl font-bold text-white uppercase mb-4">Privacy Policy</h3>
+            <div class="text-xs text-gray-300 space-y-3 leading-relaxed">
+                <p><strong>1. Data Collection:</strong> FITZONE respects user privacy. Registration data collected is exclusively utilized for fitness customization, class booking, and support.</p>
+                <p><strong>2. Front-End Demo Notice:</strong> This website operates as a functional frontend demonstration. Information submitted in forms is validated in-browser and is not permanently stored or transmitted to external servers.</p>
+                <p><strong>3. Security:</strong> We enforce high security standards to protect all client interaction points.</p>
+            </div>
+            <button onclick="closeModal('modal-privacy')" class="mt-6 w-full bg-brand-cardborder text-white py-3 rounded-xl font-bold text-xs uppercase">Close Policy</button>
+        </div>
+    </div>
+
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* -------------------------------------------------------------
+           DATA STRUCTURES
+        ------------------------------------------------------------- */
+        const programsData = [
+            {
+                id: 'p1',
+                title: 'Weight Training',
+                desc: 'Master heavy compound lifts to build dense muscle mass, increase skeletal strength, and boost metabolism.',
+                duration: '60 Min / Session',
+                level: 'Intermediate',
+                image: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop',
+                details: 'Our Weight Training program focuses on fundamental strength movements including squats, deadlifts, and bench presses. Includes posture correction, lifting techniques, and periodized overload schemes.'
+            },
+            {
+                id: 'p2',
+                title: 'Muscle Building',
+                desc: 'Hypertrophy-focused training routines engineered to maximize muscular volume and aesthetic body definition.',
+                duration: '75 Min / Session',
+                level: 'All Levels',
+                image: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop',
+                details: 'Designed for optimal muscular hypertrophy. Combines isolation techniques, time under tension, and targeted recovery protocols to build balanced lean mass.'
+            },
+            {
+                id: 'p3',
+                title: 'Weight Loss & Toning',
+                desc: 'High-intensity calorie burning program combining metabolic resistance with targeted fat-burning cardio.',
+                duration: '45 Min / Session',
+                level: 'Beginner Friendly',
+                image: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop',
+                details: 'Achieve lean athletic conditioning through interval circuits, bodyweight movements, and heart-rate zone management. Ideal for body recomposition.'
+            },
+            {
+                id: 'p4',
+                title: 'Cardio Training',
+                desc: 'Enhance cardiovascular endurance, stamina, and lung capacity with state-of-the-art aerobic protocols.',
+                duration: '45 Min / Session',
+                level: 'All Levels',
+                image: 'https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=600&auto=format&fit=crop',
+                details: 'Boost your aerobic ceiling utilizing treadmills, rowers, and air bikes in structured group cadence.'
+            },
+            {
+                id: 'p5',
+                title: 'CrossFit Endurance',
+                desc: 'High-octane functional fitness combining gymnastics, kettlebells, Olympic lifting, and power sprinting.',
+                duration: '60 Min / Session',
+                level: 'Advanced',
+                image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop',
+                details: 'Test your mental and physical grit with daily WODs (Workouts of the Day) scaled to your personal athletic threshold.'
+            },
+            {
+                id: 'p6',
+                title: 'Yoga & Flexibility',
+                desc: 'Restore joint mobility, reduce muscle tightness, and improve mental focus through guided balance flow.',
+                duration: '60 Min / Session',
+                level: 'All Levels',
+                image: 'https://images.unsplash.com/photo-1545205597-3d9d02c29597?q=80&w=600&auto=format&fit=crop',
+                details: 'A holistic mobility program designed to counteract heavy lifting tightness, enhance posture, and reduce injury risk.'
+            },
+            {
+                id: 'p7',
+                title: 'Personal Training',
+                desc: 'Dedicated 1-on-1 coaching customized to your exact physical metrics, goals, and nutrition plan.',
+                duration: '60 Min / Session',
+                level: 'Customized',
+                image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop',
+                details: 'Receive personalized attention, precise form corrections, and tailored workout programming designed around your schedule.'
+            },
+            {
+                id: 'p8',
+                title: 'Strength & Conditioning',
+                desc: 'Athletic performance conditioning designed to increase explosive power, speed, and overall resilience.',
+                duration: '60 Min / Session',
+                level: 'Intermediate',
+                image: 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=600&auto=format&fit=crop',
+                details: 'Built on pro-athlete training principles. Utilizes plyometrics, sled pushes, and powerlifting to unleash functional athleticism.'
+            }
+        ];
+
+        const trainersData = [
+            {
+                name: 'Marcus Vance',
+                spec: 'Head Strength Coach',
+                exp: '10+ Yrs Exp',
+                bio: 'Former professional powerlifter specializing in compound lifting mechanics and body transformation.',
+                image: 'https://images.unsplash.com/photo-1567013127542-490d757e51fc?q=80&w=600&auto=format&fit=crop'
+            },
+            {
+                name: 'Elena Rostova',
+                spec: 'CrossFit & HIIT Specialist',
+                exp: '7 Yrs Exp',
+                bio: 'Passionate functional fitness coach expert in athletic endurance and high-intensity interval conditioning.',
+                image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?q=80&w=600&auto=format&fit=crop'
+            },
+            {
+                name: 'David Chen',
+                spec: 'Bodybuilding & Nutrition',
+                exp: '8 Yrs Exp',
+                bio: 'Certified sports nutritionist dedicated to developing lean muscular aesthetics and precision diet plans.',
+                image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=600&auto=format&fit=crop'
+            },
+            {
+                name: 'Sarah Jenkins',
+                spec: 'Yoga & Mobility Expert',
+                exp: '6 Yrs Exp',
+                bio: 'Specialist in active flexibility, core stabilization, kinetic movement restoration, and mindfulness practice.',
+                image: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop'
+            }
+        ];
+
+        const scheduleData = [
+            { day: 'Monday', time: '07:00 AM - 08:00 AM', name: 'Strength Training', trainer: 'Marcus Vance', intensity: 'High' },
+            { day: 'Monday', time: '09:00 AM - 10:00 AM', name: 'Yoga & Flexibility', trainer: 'Sarah Jenkins', intensity: 'Low' },
+            { day: 'Monday', time: '05:30 PM - 06:30 PM', name: 'HIIT Conditioning', trainer: 'Elena Rostova', intensity: 'High' },
+            
+            { day: 'Tuesday', time: '08:00 AM - 09:00 AM', name: 'Cardio Blast', trainer: 'David Chen', intensity: 'Medium' },
+            { day: 'Tuesday', time: '10:00 AM - 11:00 AM', name: 'CrossFit WOD', trainer: 'Elena Rostova', intensity: 'High' },
+            { day: 'Tuesday', time: '06:00 PM - 07:00 PM', name: 'Zumba Fitness', trainer: 'Sarah Jenkins', intensity: 'Medium' },
+            
+            { day: 'Wednesday', time: '07:00 AM - 08:00 AM', name: 'Muscle Building', trainer: 'Marcus Vance', intensity: 'High' },
+            { day: 'Wednesday', time: '05:00 PM - 06:00 PM', name: 'Yoga Flow', trainer: 'Sarah Jenkins', intensity: 'Low' },
+            { day: 'Wednesday', time: '06:30 PM - 07:30 PM', name: 'HIIT Conditioning', trainer: 'Elena Rostova', intensity: 'High' },
+            
+            { day: 'Thursday', time: '08:30 AM - 09:30 AM', name: 'Strength & Power', trainer: 'Marcus Vance', intensity: 'High' },
+            { day: 'Thursday', time: '05:30 PM - 06:30 PM', name: 'Zumba Fitness', trainer: 'Sarah Jenkins', intensity: 'Medium' },
+            
+            { day: 'Friday', time: '07:00 AM - 08:00 AM', name: 'CrossFit Endurance', trainer: 'Elena Rostova', intensity: 'High' },
+            { day: 'Friday', time: '06:00 PM - 07:00 PM', name: 'Cardio Workout', trainer: 'David Chen', intensity: 'Medium' },
+            
+            { day: 'Saturday', time: '09:00 AM - 10:15 AM', name: 'Weekend Beast Circuit', trainer: 'Marcus Vance', intensity: 'High' },
+            { day: 'Saturday', time: '10:30 AM - 11:30 AM', name: 'Recovery Mobility Flow', trainer: 'Sarah Jenkins', intensity: 'Low' }
+        ];
+
+        const facilitiesData = [
+            { name: 'Modern Gym Equipment', desc: 'Latest biomechanically engineered resistance units and pin-loaded machines.', img: 'https://images.unsplash.com/photo-1540497077202-7c8a3999166f?q=80&w=600&auto=format&fit=crop' },
+            { name: 'Cardio Zone', desc: 'Rowers, curved treadmills, air bikes, and stairmasters with built-in telemetry.', img: 'https://images.unsplash.com/photo-1576678927484-cc909957088c?q=80&w=600&auto=format&fit=crop' },
+            { name: 'Free Weights Area', desc: 'Dumbbells up to 150 lbs, Olympic power racks, bumper plates, and lifting platforms.', img: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop' },
+            { name: 'Personal Training Studio', desc: 'Dedicated private zone for focused 1-on-1 coaching and athletic assessment.', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop' },
+            { name: 'Locker Rooms & Sauna', desc: 'Spacious hygienic lockers, private hot showers, and relaxing infrared saunas.', img: 'https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=600&auto=format&fit=crop' },
+            { name: 'Group Workout Studio', desc: 'Sprung hardwood flooring studio with surround sound for high-energy classes.', img: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop' }
+        ];
+
+        const blogData = [
+            {
+                title: '5 Fundamental Rules For Rapid Muscle Recovery',
+                summary: 'Learn how sleep optimization, hydration, and targeted protein synthesis accelerate fiber repair.',
+                img: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=600&auto=format&fit=crop',
+                date: 'May 12, 2026',
+                content: 'Muscular growth occurs during rest, not in the gym. Prioritize 7-9 hours of quality sleep, optimize protein timing post-workout, and integrate active mobility sessions on recovery days to maximize gains.'
+            },
+            {
+                title: 'Beginner Lifting: Master Form Before Weight',
+                summary: 'Avoid common beginner injuries by practicing movement patterns prior to adding heavy iron.',
+                img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop',
+                date: 'May 18, 2026',
+                content: 'Lifting heavy with poor mechanics is a shortcut to joint strain. Focus on spine neutrality, bracing your core, and controlled eccentrics before increasing weights.'
+            },
+            {
+                title: 'Nutrition 101: Fueling For Peak Gym Output',
+                summary: 'Demystifying macronutrient ratios for fat burning vs maximum power development.',
+                img: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=600&auto=format&fit=crop',
+                date: 'June 02, 2026',
+                content: 'Carbohydrates are your muscles primary energy source for high-intensity lifting. Pair clean complex carbs with lean proteins 90 minutes before your workout for maximum energy.'
+            }
+        ];
+
+        const testimonialsData = [
+            {
+                quote: "FITZONE completely altered my health journey. The coaches pushed me past my self-imposed limits, and I dropped 25 lbs of fat while gaining noticeable muscle.",
+                author: "Mark Henderson",
+                role: "Pro Plan Member (Lost 25 lbs)",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop"
+            },
+            {
+                quote: "The facility hygiene and equipment quality here beat every other club in the area. The CrossFit and HIIT community keeps me accountable every single day.",
+                author: "Jessica Martinez",
+                role: "Elite Plan Member",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=150&auto=format&fit=crop"
+            },
+            {
+                quote: "Booking personal training sessions with Coach Marcus was the best decision I made. His advice on compound biomechanics eliminated my lower back soreness.",
+                author: "Robert Chen",
+                role: "Personal Training Client",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop"
+            }
+        ];
+
+        let currentTestimonialIdx = 0;
+
+        /* -------------------------------------------------------------
+           INITIALIZATION & RENDER FUNCTIONS
+        ------------------------------------------------------------- */
+        window.addEventListener('DOMContentLoaded', () => {
+            renderPrograms();
+            renderTrainers();
+            renderFacilities();
+            renderSchedule('all');
+            renderBlogs();
+            updateTestimonialDisplay();
+            setupCounterObserver();
+            setupMobileNav();
+        });
+
+        // Mobile Menu Toggle Logic
+        function setupMobileNav() {
+            const btn = document.getElementById('mobile-menu-btn');
+            btn.addEventListener('click', toggleMobileMenu);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('hidden');
+            if (menu.classList.contains('hidden')) {
+                icon.className = 'fa-solid fa-bars text-xl';
+            } else {
+                icon.className = 'fa-solid fa-xmark text-xl';
+            }
+        }
+
+        // Render Programs
+        function renderPrograms() {
+            const container = document.getElementById('programs-container');
+            container.innerHTML = programsData.map(p => `
+                <div class="bg-brand-card border border-brand-cardborder rounded-2xl overflow-hidden flex flex-col justify-between group hover:border-brand-red transition-all duration-300 hover:-translate-y-1">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-brand-dark/80 backdrop-blur-md text-brand-red text-[11px] font-bold px-3 py-1 rounded-full uppercase border border-brand-cardborder">
+                                ${p.level}
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display text-xl font-bold text-white mb-2">${p.title}</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4">${p.desc}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex items-center justify-between border-t border-brand-cardborder/50 mt-auto">
+                        <span class="text-[11px] text-gray-400 font-medium"><i class="fa-regular fa-clock text-brand-red mr-1"></i> ${p.duration}</span>
+                        <button onclick="openProgramDetails('${p.id}')" class="text-xs font-bold text-brand-red hover:text-white transition-colors flex items-center gap-1 uppercase">
+                            View Program <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Trainers
+        function renderTrainers() {
+            const container = document.getElementById('trainers-container');
+            container.innerHTML = trainersData.map(t => `
+                <div class="bg-brand-card border border-brand-cardborder rounded-2xl overflow-hidden group hover:border-gray-600 transition-all duration-300">
+                    <div class="relative h-64 overflow-hidden">
+                        <img src="${t.image}" alt="${t.name}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500">
+                        <span class="absolute bottom-3 left-3 bg-brand-red text-white text-[10px] font-extrabold px-2.5 py-1 rounded uppercase tracking-wider">
+                            ${t.exp}
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-display text-xl font-bold text-white">${t.name}</h3>
+                        <div class="text-xs font-semibold text-brand-red uppercase tracking-wider mb-3">${t.spec}</div>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-6">${t.bio}</p>
+                        <button onclick="openTrainerModal('${t.name}')" class="w-full bg-brand-cardborder hover:bg-brand-red text-white text-xs font-bold py-2.5 rounded-xl uppercase tracking-wider transition-colors duration-200">
+                            Book Trainer
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Facilities
+        function renderFacilities() {
+            const container = document.getElementById('facilities-container');
+            container.innerHTML = facilitiesData.map(f => `
+                <div class="bg-brand-card border border-brand-cardborder rounded-2xl overflow-hidden group">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="${f.img}" alt="${f.name}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-display text-lg font-bold text-white mb-1">${f.name}</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">${f.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Schedule Table & Mobile View
+        function renderSchedule(filterDay) {
+            const tbody = document.getElementById('schedule-tbody');
+            const mobileContainer = document.getElementById('schedule-mobile-container');
+            
+            const filtered = filterDay === 'all' 
+                ? scheduleData 
+                : scheduleData.filter(s => s.day.toLowerCase() === filterDay.toLowerCase());
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-gray-500 text-xs">No classes scheduled for this day.</td></tr>`;
+                mobileContainer.innerHTML = `<p class="text-center text-gray-500 text-xs py-6">No classes scheduled for this day.</p>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map(s => `
+                <tr class="hover:bg-brand-cardborder/30 transition-colors">
+                    <td class="p-4 font-mono text-xs text-brand-red font-semibold">${s.time}</td>
+                    <td class="p-4 font-bold text-white">${s.name}</td>
+                    <td class="p-4 text-xs text-gray-300">${s.day}</td>
+                    <td class="p-4 text-xs text-gray-300">${s.trainer}</td>
+                    <td class="p-4">
+                        <span class="px-2 py-1 rounded text-[10px] font-bold uppercase ${s.intensity === 'High' ? 'bg-brand-red/20 text-brand-red border border-brand-red/30' : 'bg-gray-800 text-gray-300'}">
+                            ${s.intensity}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="openClassBookModal('${s.name}', '${s.day} ${s.time}', '${s.trainer}')" class="bg-brand-red hover:bg-brand-redhover text-white text-xs font-bold px-4 py-2 rounded-lg uppercase tracking-wider transition-all">
+                            Book Class
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            mobileContainer.innerHTML = filtered.map(s => `
+                <div class="bg-brand-dark p-4 rounded-xl border border-brand-cardborder flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-white">${s.name}</span>
+                        <span class="text-[10px] font-mono font-semibold text-brand-red">${s.time}</span>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-gray-400">
+                        <span>${s.day} • Coach ${s.trainer}</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${s.intensity === 'High' ? 'bg-brand-red/20 text-brand-red' : 'bg-gray-800 text-gray-300'}">${s.intensity}</span>
+                    </div>
+                    <button onclick="openClassBookModal('${s.name}', '${s.day} ${s.time}', '${s.trainer}')" class="w-full bg-brand-red hover:bg-brand-redhover text-white text-xs font-bold py-2.5 rounded-lg uppercase tracking-wider mt-1">
+                        Book Class
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function filterSchedule(day, btn) {
+            if (btn) {
+                document.querySelectorAll('.schedule-filter-btn').forEach(b => {
+                    b.className = 'schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-card border border-brand-cardborder text-gray-300 hover:text-white transition-all';
+                });
+                btn.className = 'schedule-filter-btn px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider bg-brand-red text-white transition-all';
+            }
+            renderSchedule(day);
+        }
+
+        // Render Blog Articles
+        function renderBlogs() {
+            const container = document.getElementById('blog-container');
+            container.innerHTML = blogData.map((b, idx) => `
+                <article class="bg-brand-card border border-brand-cardborder rounded-2xl overflow-hidden flex flex-col justify-between group">
+                    <div>
+                        <div class="relative h-48 overflow-hidden">
+                            <img src="${b.img}" alt="${b.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <span class="absolute top-3 left-3 bg-brand-dark/80 text-gray-300 text-[10px] font-bold px-3 py-1 rounded-full border border-brand-cardborder">
+                                ${b.date}
+                            </span>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display text-lg font-bold text-white mb-2 leading-snug">${b.title}</h3>
+                            <p class="text-xs text-gray-400 leading-relaxed mb-4">${b.summary}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0">
+                        <button onclick="openBlogModal(${idx})" class="text-xs font-bold text-brand-red hover:text-white transition-colors flex items-center gap-1 uppercase">
+                            Read More <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </button>
+                    </div>
+                </article>
+            `).join('');
+        }
+
+        // Testimonial Navigation
+        function updateTestimonialDisplay() {
+            const data = testimonialsData[currentTestimonialIdx];
+            document.getElementById('testimonial-text').innerText = `"${data.quote}"`;
+            document.getElementById('testimonial-author').innerText = data.author;
+            document.getElementById('testimonial-role').innerText = data.role;
+            document.getElementById('testimonial-avatar').src = data.avatar;
+        }
+
+        function nextTestimonial() {
+            currentTestimonialIdx = (currentTestimonialIdx + 1) % testimonialsData.length;
+            updateTestimonialDisplay();
+        }
+
+        function prevTestimonial() {
+            currentTestimonialIdx = (currentTestimonialIdx - 1 + testimonialsData.length) % testimonialsData.length;
+            updateTestimonialDisplay();
+        }
+
+        /* -------------------------------------------------------------
+           MODAL CONTROL FUNCTIONS
+        ------------------------------------------------------------- */
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function openProgramDetails(progId) {
+            const p = programsData.find(item => item.id === progId);
+            if (!p) return;
+
+            const content = document.getElementById('modal-details-content');
+            content.innerHTML = `
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-6">
+                    <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+                </div>
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">${p.level} • ${p.duration}</span>
+                <h3 class="font-display text-3xl font-bold text-white mt-1 mb-4 uppercase">${p.title}</h3>
+                <p class="text-sm text-gray-300 leading-relaxed mb-6">${p.details}</p>
+                <div class="flex flex-col sm:flex-row items-center gap-4 border-t border-brand-cardborder pt-6">
+                    <a href="#registration" onclick="closeModal('modal-details'); selectPlan('Pro Plan');" class="w-full sm:flex-1 bg-brand-red hover:bg-brand-redhover text-white text-center font-bold py-3.5 rounded-xl uppercase tracking-wider text-xs">
+                        Enroll In Program
+                    </a>
+                    <button onclick="closeModal('modal-details')" class="w-full sm:w-auto bg-brand-cardborder text-gray-300 hover:text-white font-semibold px-6 py-3.5 rounded-xl uppercase tracking-wider text-xs">
+                        Close
+                    </button>
+                </div>
+            `;
+            openModal('modal-details');
+        }
+
+        function openTrainerModal(trainerName) {
+            document.getElementById('trainer-hidden-name').value = trainerName;
+            document.getElementById('trainer-display-name').value = trainerName;
+            openModal('modal-trainer');
+        }
+
+        function openClassBookModal(className, scheduleText, trainer) {
+            document.getElementById('cb-class-name').innerText = className;
+            document.getElementById('cb-class-schedule').innerText = scheduleText;
+            document.getElementById('cb-class-trainer').innerText = trainer;
+            openModal('modal-class-book');
+        }
+
+        function openBlogModal(blogIndex) {
+            const b = blogData[blogIndex];
+            if (!b) return;
+
+            const content = document.getElementById('modal-details-content');
+            content.innerHTML = `
+                <div class="relative h-64 rounded-2xl overflow-hidden mb-6">
+                    <img src="${b.img}" alt="${b.title}" class="w-full h-full object-cover">
+                </div>
+                <span class="text-brand-red font-semibold text-xs uppercase tracking-widest">${b.date}</span>
+                <h3 class="font-display text-2xl font-bold text-white mt-1 mb-4 uppercase">${b.title}</h3>
+                <p class="text-sm text-gray-300 leading-relaxed mb-6">${b.content}</p>
+                <div class="border-t border-brand-cardborder pt-6">
+                    <button onclick="closeModal('modal-details')" class="w-full bg-brand-cardborder text-white font-semibold py-3 rounded-xl uppercase tracking-wider text-xs">
+                        Close Article
+                    </button>
+                </div>
+            `;
+            openModal('modal-details');
+        }
+
+        // Direct Membership Plan Selection
+        function selectPlan(planName) {
+            const selectEl = document.getElementById('reg-plan');
+            if (selectEl) {
+                selectEl.value = planName;
+            }
+            const regSection = document.getElementById('registration');
+            if (regSection) {
+                regSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            showToast(`Selected ${planName}. Complete form below.`, 'info');
+        }
+
+        /* -------------------------------------------------------------
+           FORM VALIDATIONS & HANDLERS
+        ------------------------------------------------------------- */
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        function validatePhone(phone) {
+            return /^[\d\+\-\(\)\s]{7,20}$/.test(phone);
+        }
+
+        function handleRegistrationSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            let isValid = true;
+
+            const name = document.getElementById('reg-name');
+            const email = document.getElementById('reg-email');
+            const phone = document.getElementById('reg-phone');
+            const age = document.getElementById('reg-age');
+            const plan = document.getElementById('reg-plan');
+            const goal = document.getElementById('reg-goal');
+            const date = document.getElementById('reg-date');
+            const terms = document.getElementById('reg-terms');
+
+            // Reset errors
+            form.querySelectorAll('.error-msg').forEach(el => el.classList.add('hidden'));
+
+            if (!name.value.trim()) {
+                showFieldError(name);
+                isValid = false;
+            }
+            if (!validateEmail(email.value)) {
+                showFieldError(email);
+                isValid = false;
+            }
+            if (!validatePhone(phone.value)) {
+                showFieldError(phone);
+                isValid = false;
+            }
+            if (!age.value || age.value < 14 || age.value > 99) {
+                showFieldError(age);
+                isValid = false;
+            }
+            if (!plan.value) {
+                showFieldError(plan);
+                isValid = false;
+            }
+            if (!goal.value) {
+                showFieldError(goal);
+                isValid = false;
+            }
+            if (!date.value) {
+                showFieldError(date);
+                isValid = false;
+            }
+            if (!terms.checked) {
+                terms.parentElement.nextElementSibling.classList.remove('hidden');
+                isValid = false;
+            }
+
+            if (!isValid) return;
+
+            // Simulated Submission State
+            const submitBtn = document.getElementById('reg-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processing...`;
+
+            setTimeout(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<span>Submit Registration</span>`;
+                showToast(`Welcome to FITZONE, ${name.value.trim()}! Demo registration confirmed.`, 'success');
+                form.reset();
+            }, 1200);
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const form = e.target;
+            let isValid = true;
+
+            const name = document.getElementById('contact-name');
+            const email = document.getElementById('contact-email');
+            const subject = document.getElementById('contact-subject');
+            const msg = document.getElementById('contact-msg');
+
+            form.querySelectorAll('.error-msg').forEach(el => el.classList.add('hidden'));
+
+            if (!name.value.trim()) { showFieldError(name); isValid = false; }
+            if (!validateEmail(email.value)) { showFieldError(email); isValid = false; }
+            if (!subject.value.trim()) { showFieldError(subject); isValid = false; }
+            if (!msg.value.trim()) { showFieldError(msg); isValid = false; }
+
+            if (!isValid) return;
+
+            const btn = document.getElementById('contact-submit-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Sending...`;
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerText = `Send Message`;
+                showToast(`Thank you ${name.value}! Your message has been dispatched (Demo).`, 'success');
+                form.reset();
+            }, 1000);
+        }
+
+        function handleFreeTrialSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('trial-name').value;
+            const email = document.getElementById('trial-email').value;
+            const date = document.getElementById('trial-date').value;
+
+            if (!name || !validateEmail(email) || !date) {
+                showToast('Please fill all required free trial fields.', 'error');
+                return;
+            }
+
+            closeModal('modal-free-trial');
+            showToast(`Free pass generated for ${name} on ${date}. Check your inbox!`, 'success');
+            e.target.reset();
+        }
+
+        function handleTrainerSubmit(e) {
+            e.preventDefault();
+            const trainer = document.getElementById('trainer-display-name').value;
+            const name = document.getElementById('trainer-client-name').value;
+            const date = document.getElementById('trainer-date').value;
+
+            if (!name || !date) {
+                showToast('Please provide date and your name for trainer reservation.', 'error');
+                return;
+            }
+
+            closeModal('modal-trainer');
+            showToast(`Session with Coach ${trainer} requested for ${date}!`, 'success');
+            e.target.reset();
+        }
+
+        function handleClassBookSubmit(e) {
+            e.preventDefault();
+            const className = document.getElementById('cb-class-name').innerText;
+            const userName = document.getElementById('cb-user-name').value;
+
+            if (!userName) {
+                showToast('Please enter your full name.', 'error');
+                return;
+            }
+
+            closeModal('modal-class-book');
+            showToast(`Spot reserved in ${className} for ${userName}!`, 'success');
+            e.target.reset();
+        }
+
+        function showFieldError(inputEl) {
+            const errSpan = inputEl.nextElementSibling;
+            if (errSpan && errSpan.classList.contains('error-msg')) {
+                errSpan.classList.remove('hidden');
+            }
+        }
+
+        function resetForm(formId) {
+            const form = document.getElementById(formId);
+            if (form) {
+                form.reset();
+                form.querySelectorAll('.error-msg').forEach(el => el.classList.add('hidden'));
+                showToast('Form fields cleared.', 'info');
+            }
+        }
+
+        /* -------------------------------------------------------------
+           UI UTILITIES & INTERACTIVES
+        ------------------------------------------------------------- */
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            const bgColor = type === 'success' ? 'bg-brand-card border-brand-accent text-white' :
+                            type === 'error' ? 'bg-brand-card border-brand-red text-white' :
+                            'bg-brand-card border-brand-cardborder text-white';
+
+            const icon = type === 'success' ? 'fa-circle-check text-brand-accent' :
+                         type === 'error' ? 'fa-triangle-exclamation text-brand-red' :
+                         'fa-circle-info text-blue-400';
+
+            toast.className = `pointer-events-auto border px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 text-xs font-semibold transform translate-y-4 opacity-0 transition-all duration-300 ${bgColor}`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i> <span>${message}</span>`;
+
+            container.appendChild(toast);
+
+            // Animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            // Dismiss after 3.5s
+            setTimeout(() => {
+                toast.classList.add('translate-y-4', 'opacity-0');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        function handleSocialClick(platform) {
+            showToast(`Opening FITZONE official ${platform} page (Demo link).`, 'info');
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Animated Statistics Counters
+        function setupCounterObserver() {
+            const counters = document.querySelectorAll('.counter');
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = +entry.target.getAttribute('data-target');
+                        let count = 0;
+                        const speed = target / 50;
+
+                        const updateCount = () => {
+                            count += speed;
+                            if (count < target) {
+                                entry.target.innerText = Math.ceil(count) + '+';
+                                setTimeout(updateCount, 25);
+                            } else {
+                                entry.target.innerText = target + '+';
+                            }
+                        };
+                        updateCount();
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            counters.forEach(c => observer.observe(c));
+        }
+
+        // Keybindings for Accessibility
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>

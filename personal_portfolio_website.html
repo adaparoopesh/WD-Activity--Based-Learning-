@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Personal Portfolio of Alex Morgan - Aspiring Software Developer, Web Developer, and Tech Enthusiast.">
+    <meta name="keywords" content="Portfolio, Software Developer, Frontend Developer, Web Development, JavaScript, React">
+    <meta name="author" content="Alex Morgan">
+    
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Alex Morgan - Software Developer Portfolio">
+    <meta property="og:description" content="Explore my projects, skills, educational qualifications, and career journey.">
+    <meta property="og:type" content="website">
+
+    <title>Alex Morgan | Software Developer Portfolio</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS Variables and Mandatory Red Theme Styling -->
+    <style>
+        :root {
+            --primary-red: #FF0000;
+            --dark-red: #CC0000;
+            --hover-red: #B30000;
+            --background: #0D0D0D;
+            --secondary-bg: #171717;
+            --card-background: #202020;
+            --text-primary: #FFFFFF;
+            --text-secondary: #B3B3B3;
+            --border-color: #333333;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* MANDATORY RED BUTTON STYLING FOR ALL BUTTONS & BTN CLASSES */
+        button,
+        .btn,
+        input[type="submit"],
+        input[type="button"],
+        input[type="reset"],
+        a.btn,
+        button[type="submit"] {
+            background-color: var(--primary-red) !important;
+            color: #FFFFFF !important;
+            border: 1px solid var(--primary-red) !important;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+
+        button:hover,
+        .btn:hover,
+        input[type="submit"]:hover,
+        input[type="button"]:hover,
+        input[type="reset"]:hover,
+        a.btn:hover {
+            background-color: var(--hover-red) !important;
+            border-color: var(--hover-red) !important;
+            transform: translateY(-3px);
+            box-shadow: 0 0 18px rgba(255, 0, 0, 0.45);
+        }
+
+        button:focus-visible,
+        .btn:focus-visible,
+        a:focus-visible {
+            outline: 2px solid #FFFFFF !important;
+            outline-offset: 4px;
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        button:disabled:hover {
+            background-color: var(--primary-red) !important;
+        }
+
+        /* Glassmorphism & Custom Glow Utilities */
+        .glass-card {
+            background: rgba(32, 32, 32, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+        }
+
+        .red-glow-sm {
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
+        .red-glow-lg {
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+        }
+
+        .border-red-glow:hover {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.35);
+        }
+
+        /* Keyframe Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Scroll Reveal Utility Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0D0D0D;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-red);
+        }
+
+        /* Typing Effect Caret */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+            color: var(--primary-red);
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-red-600 selection:text-white">
+
+    <!-- ========================================== -->
+    <!-- 2. NAVIGATION BAR                         -->
+    <!-- ========================================== -->
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-black/60 backdrop-blur-md border-b border-neutral-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Personal Logo / Name -->
+            <a href="#home" class="flex items-center space-x-2 group">
+                <span class="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center font-extrabold text-xl text-white shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
+                    AM
+                </span>
+                <span class="text-xl font-bold tracking-tight text-white group-hover:text-red-500 transition-colors">
+                    Alex<span class="text-red-600">.Morgan</span>
+                </span>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden lg:flex items-center space-x-1 xl:space-x-2">
+                <a href="#home" class="nav-link px-3 py-2 text-sm font-medium text-white hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Home</a>
+                <a href="#about" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">About Me</a>
+                <a href="#education" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Education</a>
+                <a href="#skills" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Skills</a>
+                <a href="#hobbies" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Hobbies</a>
+                <a href="#projects" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Projects</a>
+                <a href="#achievements" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Achievements</a>
+                <a href="#resume" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Resume</a>
+                <a href="#contact" class="nav-link px-3 py-2 text-sm font-medium text-neutral-400 hover:text-red-500 relative transition-colors after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-0.5 after:bg-red-600 hover:after:w-3/4 after:transition-all">Contact</a>
+            </nav>
+
+            <!-- Desktop Nav CTA Button -->
+            <div class="hidden lg:flex items-center">
+                <a href="#contact" class="btn text-sm py-2 px-4">
+                    <i class="fa-solid fa-paper-plane text-xs"></i> Hire Me
+                </a>
+            </div>
+
+            <!-- Mobile Hamburger Button -->
+            <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-md focus:outline-none" aria-label="Toggle navigation menu">
+                <i class="fa-solid fa-bars text-xl" id="menu-icon"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-[#171717] border-b border-neutral-800 px-4 pt-2 pb-6 space-y-2">
+            <a href="#home" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-white hover:bg-neutral-800 hover:text-red-500">Home</a>
+            <a href="#about" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">About Me</a>
+            <a href="#education" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Education</a>
+            <a href="#skills" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Skills</a>
+            <a href="#hobbies" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Hobbies</a>
+            <a href="#projects" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Projects</a>
+            <a href="#achievements" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Achievements</a>
+            <a href="#resume" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Resume</a>
+            <a href="#contact" class="mobile-nav-link block px-3 py-2 rounded-md text-base font-medium text-neutral-300 hover:bg-neutral-800 hover:text-red-500">Contact</a>
+            <div class="pt-2">
+                <a href="#contact" class="btn w-full text-center">
+                    <i class="fa-solid fa-paper-plane text-xs"></i> Hire Me
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20">
+
+        <!-- ========================================== -->
+        <!-- 3. HOME / HERO SECTION                     -->
+        <!-- ========================================== -->
+        <section id="home" class="min-h-[calc(100vh-5rem)] flex items-center justify-center relative overflow-hidden py-16">
+            <!-- Subtle Radial Gradient Background Effect -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <!-- Hero Content Left -->
+                    <div class="lg:col-span-7 space-y-6 text-center lg:text-left reveal">
+                        <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-red-950/40 border border-red-800/40 text-red-500 text-sm font-semibold">
+                            <span class="w-2 h-2 rounded-full bg-red-600 animate-pulse"></span>
+                            <span>Available for Opportunities</span>
+                        </div>
+
+                        <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white leading-tight">
+                            Hi, I'm <span class="text-red-600 underline decoration-red-600/30 underline-offset-8">Alex Morgan</span>
+                        </h1>
+
+                        <h2 class="text-xl sm:text-2xl font-bold text-neutral-300 h-8 flex items-center justify-center lg:justify-start">
+                            <span>I am a&nbsp;</span>
+                            <span id="typed-text" class="text-red-500 typing-cursor"></span>
+                        </h2>
+
+                        <p class="text-neutral-400 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                            Passionate about building scalable web applications, solving complex computational problems, and creating sleek, interactive user experiences with clean code.
+                        </p>
+
+                        <!-- Hero Action Buttons -->
+                        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                            <a href="#projects" class="btn w-full sm:w-auto text-base">
+                                <i class="fa-solid fa-briefcase"></i> Explore My Work
+                            </a>
+                            <a href="#resume" class="btn w-full sm:w-auto text-base">
+                                <i class="fa-solid fa-download"></i> Download Resume
+                            </a>
+                        </div>
+
+                        <!-- Social Icons -->
+                        <div class="pt-6 flex items-center justify-center lg:justify-start space-x-6 text-neutral-400">
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transform hover:scale-125 transition-all text-2xl" aria-label="GitHub">
+                                <i class="fa-brands fa-github"></i>
+                            </a>
+                            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transform hover:scale-125 transition-all text-2xl" aria-label="LinkedIn">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="hover:text-red-500 transform hover:scale-125 transition-all text-2xl" aria-label="Instagram">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                            <a href="mailto:alex.morgan@example.com" class="hover:text-red-500 transform hover:scale-125 transition-all text-2xl" aria-label="Email">
+                                <i class="fa-solid fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Hero Image Right -->
+                    <div class="lg:col-span-5 flex justify-center reveal">
+                        <div class="relative w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96">
+                            <!-- Glow Ring -->
+                            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-red-600 to-red-900 opacity-30 blur-2xl animate-pulse"></div>
+                            
+                            <!-- Profile Image Container -->
+                            <div class="relative w-full h-full rounded-3xl border-2 border-red-600/40 p-3 bg-[#171717] shadow-2xl animate-float overflow-hidden group">
+                                <img src="https://placehold.co/600x600/202020/FF0000?text=Profile+Image" 
+                                     alt="Alex Morgan Profile Photo" 
+                                     class="w-full h-full object-cover rounded-2xl group-hover:scale-105 transition-transform duration-500"
+                                     onerror="this.src='https://placehold.co/600x600/202020/FFFFFF?text=Alex+Morgan'">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 4. ABOUT ME SECTION                        -->
+        <!-- ========================================== -->
+        <section id="about" class="py-24 bg-[#171717] relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        About <span class="text-red-600">Me</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    <!-- Left Photo Card -->
+                    <div class="lg:col-span-5 reveal">
+                        <div class="glass-card p-4 rounded-2xl border-red-glow">
+                            <img src="https://placehold.co/600x700/0D0D0D/FF0000?text=About+Me+Photo" 
+                                 alt="Alex Morgan Working" 
+                                 class="w-full h-auto rounded-xl object-cover shadow-lg"
+                                 onerror="this.src='https://placehold.co/600x700/0D0D0D/FFFFFF?text=Developer+At+Work'">
+                        </div>
+                    </div>
+
+                    <!-- Right Personal Info -->
+                    <div class="lg:col-span-7 space-y-6 reveal">
+                        <h3 class="text-2xl font-bold text-white">
+                            Driven Developer Creating High-Impact Digital Solutions
+                        </h3>
+                        
+                        <p class="text-neutral-300 leading-relaxed">
+                            Hello! I am <strong class="text-white">Alex Morgan</strong>, a dedicated tech enthusiast based in <strong class="text-white">San Francisco, CA</strong>. I am currently pursuing my degree in Computer Science and continuously expanding my practical expertise in full-stack software development.
+                        </p>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                            <div class="p-4 bg-[#202020] rounded-xl border border-neutral-800">
+                                <p class="text-xs text-neutral-400 uppercase font-semibold">Location</p>
+                                <p class="text-white font-medium">San Francisco, CA</p>
+                            </div>
+                            <div class="p-4 bg-[#202020] rounded-xl border border-neutral-800">
+                                <p class="text-xs text-neutral-400 uppercase font-semibold">Career Goal</p>
+                                <p class="text-white font-medium">Full Stack Software Engineer</p>
+                            </div>
+                            <div class="p-4 bg-[#202020] rounded-xl border border-neutral-800">
+                                <p class="text-xs text-neutral-400 uppercase font-semibold">Degree</p>
+                                <p class="text-white font-medium">B.S. Computer Science</p>
+                            </div>
+                            <div class="p-4 bg-[#202020] rounded-xl border border-neutral-800">
+                                <p class="text-xs text-neutral-400 uppercase font-semibold">Email</p>
+                                <p class="text-white font-medium">alex.morgan@example.com</p>
+                            </div>
+                        </div>
+
+                        <!-- Extra Hidden Paragraph Toggled by Read More Button -->
+                        <div id="about-more-content" class="hidden space-y-4 text-neutral-300 pt-2 border-t border-neutral-800">
+                            <p>
+                                Beyond writing code, I actively participate in open-source projects, competitive programming, and technical hackathons. My core focus lies in algorithmic efficiency, responsive web engineering, and modern architecture.
+                            </p>
+                            <p>
+                                I thrive in collaborative environments and enjoy translating complex business problems into clean, maintainable software systems.
+                            </p>
+                        </div>
+
+                        <div class="pt-4">
+                            <button id="about-read-more-btn" class="btn">
+                                <i class="fa-solid fa-chevron-down" id="read-more-icon"></i> Read More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 5. EDUCATIONAL QUALIFICATIONS              -->
+        <!-- ========================================== -->
+        <section id="education" class="py-24 bg-[#0D0D0D]">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Education <span class="text-red-600">Timeline</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Timeline Container -->
+                <div class="relative border-l-2 border-red-600/40 ml-4 sm:ml-32 space-y-12">
+
+                    <!-- Timeline Item 1 -->
+                    <div class="relative pl-8 sm:pl-10 reveal">
+                        <!-- Red Circle Marker -->
+                        <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-[#0D0D0D] border-4 border-red-600 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                        </div>
+
+                        <!-- Date Badge for Larger Screens -->
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-sm font-bold text-red-500 mb-2 sm:mb-0 sm:text-right w-28">
+                            2021 - Present
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transition-colors">
+                            <h3 class="text-xl font-bold text-white">Bachelor of Science in Computer Science</h3>
+                            <p class="text-red-500 font-medium">State University of Technology</p>
+                            <div class="flex items-center space-x-4 my-2 text-xs text-neutral-400">
+                                <span><i class="fa-solid fa-star text-red-500"></i> CGPA: 3.8 / 4.0</span>
+                                <span><i class="fa-solid fa-location-dot"></i> California, USA</span>
+                            </div>
+                            <p class="text-neutral-300 text-sm mt-3">
+                                Relevant Coursework: Data Structures & Algorithms, Database Systems, Web Development, Software Engineering, Computer Networks, Operating Systems.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 2 -->
+                    <div class="relative pl-8 sm:pl-10 reveal">
+                        <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-[#0D0D0D] border-4 border-red-600 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                        </div>
+
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-sm font-bold text-red-500 mb-2 sm:mb-0 sm:text-right w-28">
+                            2019 - 2021
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transition-colors">
+                            <h3 class="text-xl font-bold text-white">Higher Secondary Education (STEM Track)</h3>
+                            <p class="text-red-500 font-medium">Central Academy High School</p>
+                            <div class="flex items-center space-x-4 my-2 text-xs text-neutral-400">
+                                <span><i class="fa-solid fa-award text-red-500"></i> Percentage: 94%</span>
+                                <span><i class="fa-solid fa-location-dot"></i> California, USA</span>
+                            </div>
+                            <p class="text-neutral-300 text-sm mt-3">
+                                Focused on Advanced Mathematics, Physics, and Computer Science Fundamentals. Head of Computer Science Student Club.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Timeline Item 3 -->
+                    <div class="relative pl-8 sm:pl-10 reveal">
+                        <div class="absolute -left-[17px] top-1 w-8 h-8 rounded-full bg-[#0D0D0D] border-4 border-red-600 flex items-center justify-center">
+                            <div class="w-2 h-2 rounded-full bg-white"></div>
+                        </div>
+
+                        <div class="sm:absolute sm:-left-36 sm:top-1 text-sm font-bold text-red-500 mb-2 sm:mb-0 sm:text-right w-28">
+                            2019
+                        </div>
+
+                        <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transition-colors">
+                            <h3 class="text-xl font-bold text-white">Secondary School Certificate</h3>
+                            <p class="text-red-500 font-medium">St. Xavier Secondary School</p>
+                            <div class="flex items-center space-x-4 my-2 text-xs text-neutral-400">
+                                <span><i class="fa-solid fa-certificate text-red-500"></i> Grade: Distinction</span>
+                            </div>
+                            <p class="text-neutral-300 text-sm mt-3">
+                                Graduated with high honors, participating in national science fairs and logic competitions.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 6. TECHNICAL SKILLS                        -->
+        <!-- ========================================== -->
+        <section id="skills" class="py-24 bg-[#171717]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Technical <span class="text-red-600">Skills</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Programming Languages -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 reveal">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-code"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Languages</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">C / C++</span>
+                                    <span class="text-red-500">85%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="85%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">Java</span>
+                                    <span class="text-red-500">80%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="80%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">Python</span>
+                                    <span class="text-red-500">90%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="90%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">JavaScript</span>
+                                    <span class="text-red-500">92%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="92%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Web Development -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 reveal">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Web Development</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">HTML5 / CSS3</span>
+                                    <span class="text-red-500">95%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="95%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">React.js</span>
+                                    <span class="text-red-500">88%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="88%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">Tailwind CSS</span>
+                                    <span class="text-red-500">92%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="92%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">Responsive Web Design</span>
+                                    <span class="text-red-500">95%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tools and Technologies -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 reveal">
+                        <div class="flex items-center space-x-3 mb-6">
+                            <div class="w-10 h-10 rounded-lg bg-red-600/20 text-red-500 flex items-center justify-center text-xl">
+                                <i class="fa-solid fa-screwdriver-wrench"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white">Tools & Databases</h3>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">Git / GitHub</span>
+                                    <span class="text-red-500">90%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="90%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">VS Code</span>
+                                    <span class="text-red-500">95%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="95%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">SQL / Relational DBs</span>
+                                    <span class="text-red-500">82%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="82%"></div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="flex justify-between text-sm font-medium mb-1">
+                                    <span class="text-neutral-200">REST APIs</span>
+                                    <span class="text-red-500">87%</span>
+                                </div>
+                                <div class="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
+                                    <div class="progress-bar bg-red-600 h-full rounded-full transition-all duration-1000" style="width: 0%" data-progress="87%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 7. HOBBIES AND INTERESTS                   -->
+        <!-- ========================================== -->
+        <section id="hobbies" class="py-24 bg-[#0D0D0D]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Hobbies & <span class="text-red-600">Interests</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    <!-- Hobby 1 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Creative Coding</h3>
+                        <p class="text-neutral-400 text-sm">Experimenting with canvas algorithms, WebGL graphics, and new web APIs.</p>
+                    </div>
+
+                    <!-- Hobby 2 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Tech Reading</h3>
+                        <p class="text-neutral-400 text-sm">Reading blogs, system design books, and emerging software tech papers.</p>
+                    </div>
+
+                    <!-- Hobby 3 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-plane"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Traveling</h3>
+                        <p class="text-neutral-400 text-sm">Exploring new cultures, historic landmarks, and scenic landscapes.</p>
+                    </div>
+
+                    <!-- Hobby 4 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Photography</h3>
+                        <p class="text-neutral-400 text-sm">Capturing urban architecture, street photography, and natural light.</p>
+                    </div>
+
+                    <!-- Hobby 5 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Gaming</h3>
+                        <p class="text-neutral-400 text-sm">Strategy and indie puzzles that test logic, focus, and puzzle-solving skills.</p>
+                    </div>
+
+                    <!-- Hobby 6 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-headphones"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Listening to Music</h3>
+                        <p class="text-neutral-400 text-sm">Synthwave, lo-fi beats, and instrumental tracks for deep coding focus.</p>
+                    </div>
+
+                    <!-- Hobby 7 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-basketball"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Sports & Fitness</h3>
+                        <p class="text-neutral-400 text-sm">Playing basketball and maintaining an active, healthy physical routine.</p>
+                    </div>
+
+                    <!-- Hobby 8 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transform hover:-translate-y-2 transition-all duration-300 reveal text-center group">
+                        <div class="w-16 h-16 rounded-2xl bg-red-600/10 text-red-500 flex items-center justify-center text-3xl mx-auto mb-4 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-microchip"></i>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">New Tech</h3>
+                        <p class="text-neutral-400 text-sm">Exploring AI development tooling, cloud infrastructure, and gadgets.</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 8. PROJECTS PORTFOLIO                      -->
+        <!-- ========================================== -->
+        <section id="projects" class="py-24 bg-[#171717]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-12 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Featured <span class="text-red-600">Projects</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <!-- Filter Category Buttons -->
+                <div class="flex flex-wrap justify-center gap-3 mb-12 reveal">
+                    <button class="project-filter-btn btn text-xs sm:text-sm py-2 px-4" data-filter="all">All</button>
+                    <button class="project-filter-btn btn text-xs sm:text-sm py-2 px-4" data-filter="web">Web Development</button>
+                    <button class="project-filter-btn btn text-xs sm:text-sm py-2 px-4" data-filter="app">Applications</button>
+                    <button class="project-filter-btn btn text-xs sm:text-sm py-2 px-4" data-filter="other">Other</button>
+                </div>
+
+                <!-- Projects Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="projects-grid">
+
+                    <!-- Project Card 1 -->
+                    <div class="project-card glass-card rounded-2xl overflow-hidden border border-neutral-800 hover:border-red-600 transition-all duration-300 flex flex-col reveal" data-category="web">
+                        <div class="relative overflow-hidden h-48 bg-neutral-900 group">
+                            <img src="https://placehold.co/600x400/202020/FF0000?text=Portfolio+Website" 
+                                 alt="Personal Portfolio Screenshot" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/202020/FFFFFF?text=Portfolio'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Personal Portfolio Website</h3>
+                                <p class="text-neutral-400 text-sm mb-4">A high-performance responsive portfolio built with modern HTML, Tailwind CSS, and vanilla JS featuring a red accent theme.</p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">HTML5</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Tailwind CSS</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">JavaScript</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-brands fa-github text-xs"></i> GitHub
+                                </a>
+                                <a href="#" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="project-card glass-card rounded-2xl overflow-hidden border border-neutral-800 hover:border-red-600 transition-all duration-300 flex flex-col reveal" data-category="app">
+                        <div class="relative overflow-hidden h-48 bg-neutral-900 group">
+                            <img src="https://placehold.co/600x400/202020/FF0000?text=Student+Management" 
+                                 alt="Student Management System Screenshot" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/202020/FFFFFF?text=Student+App'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Student Management System</h3>
+                                <p class="text-neutral-400 text-sm mb-4">Full-stack database software to manage student records, course enrollments, grade calculations, and transcript generation.</p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Java</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">SQL</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Swing</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-brands fa-github text-xs"></i> GitHub
+                                </a>
+                                <a href="#" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> View Project
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 3 -->
+                    <div class="project-card glass-card rounded-2xl overflow-hidden border border-neutral-800 hover:border-red-600 transition-all duration-300 flex flex-col reveal" data-category="web">
+                        <div class="relative overflow-hidden h-48 bg-neutral-900 group">
+                            <img src="https://placehold.co/600x400/202020/FF0000?text=Weather+Forecast" 
+                                 alt="Weather App Screenshot" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/202020/FFFFFF?text=Weather+App'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Weather Forecast Application</h3>
+                                <p class="text-neutral-400 text-sm mb-4">Interactive weather application consuming OpenWeather API with geolocation, hourly metrics, and dynamic background visuals.</p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">React</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">REST API</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">CSS3</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-brands fa-github text-xs"></i> GitHub
+                                </a>
+                                <a href="#" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 4 -->
+                    <div class="project-card glass-card rounded-2xl overflow-hidden border border-neutral-800 hover:border-red-600 transition-all duration-300 flex flex-col reveal" data-category="app">
+                        <div class="relative overflow-hidden h-48 bg-neutral-900 group">
+                            <img src="https://placehold.co/600x400/202020/FF0000?text=Task+Management" 
+                                 alt="Task App Screenshot" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/202020/FFFFFF?text=Task+App'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Task Management App</h3>
+                                <p class="text-neutral-400 text-sm mb-4">Productivity tool supporting drag-and-drop Kanban boards, local storage persistence, priority badges, and search filters.</p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">JavaScript</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">HTML5</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">LocalStorage</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-brands fa-github text-xs"></i> GitHub
+                                </a>
+                                <a href="#" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 5 -->
+                    <div class="project-card glass-card rounded-2xl overflow-hidden border border-neutral-800 hover:border-red-600 transition-all duration-300 flex flex-col reveal" data-category="web">
+                        <div class="relative overflow-hidden h-48 bg-neutral-900 group">
+                            <img src="https://placehold.co/600x400/202020/FF0000?text=E-Commerce+Store" 
+                                 alt="E-commerce Store Screenshot" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/202020/FFFFFF?text=E-Commerce'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">E-Commerce Web Application</h3>
+                                <p class="text-neutral-400 text-sm mb-4">Feature-rich store experience including dynamic shopping cart, product category filters, search bar, and mock payment summary.</p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">React</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Tailwind CSS</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Context API</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-brands fa-github text-xs"></i> GitHub
+                                </a>
+                                <a href="#" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> Live Demo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 6 -->
+                    <div class="project-card glass-card rounded-2xl overflow-hidden border border-neutral-800 hover:border-red-600 transition-all duration-300 flex flex-col reveal" data-category="other">
+                        <div class="relative overflow-hidden h-48 bg-neutral-900 group">
+                            <img src="https://placehold.co/600x400/202020/FF0000?text=Python+Algorithm+Visualizer" 
+                                 alt="Algorithm Visualizer Screenshot" 
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                 onerror="this.src='https://placehold.co/600x400/202020/FFFFFF?text=Algo+Visualizer'">
+                        </div>
+                        <div class="p-6 flex-1 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold text-white mb-2">Algorithm Visualizer</h3>
+                                <p class="text-neutral-400 text-sm mb-4">Interactive Python script visualizer rendering real-time sorting and pathfinding algorithms step-by-step.</p>
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Python</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Pygame</span>
+                                    <span class="px-2.5 py-1 bg-neutral-800 text-red-500 text-xs rounded-md font-medium">Algorithms</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-brands fa-github text-xs"></i> GitHub
+                                </a>
+                                <a href="#" class="btn text-xs py-2 px-3 flex-1">
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i> View Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 9. ACHIEVEMENTS AND CERTIFICATIONS         -->
+        <!-- ========================================== -->
+        <section id="achievements" class="py-24 bg-[#0D0D0D]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Achievements & <span class="text-red-600">Certifications</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                    <!-- Achievement 1 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transition-colors reveal">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 bg-red-950/60 text-red-400 border border-red-800/50 rounded-full">2024</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">1st Place - University Hackathon</h3>
+                        <p class="text-red-500 text-sm font-medium mb-3">State Tech Innovation Challenge</p>
+                        <p class="text-neutral-400 text-sm mb-4">Led a 4-member team to construct an automated emergency routing application under 36 hours.</p>
+                        <a href="#" class="text-xs font-semibold text-red-500 hover:text-red-400 inline-flex items-center gap-1">
+                            Verify Certificate <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    <!-- Achievement 2 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transition-colors reveal">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-certificate"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 bg-red-950/60 text-red-400 border border-red-800/50 rounded-full">2023</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Meta Front-End Developer Certificate</h3>
+                        <p class="text-red-500 text-sm font-medium mb-3">Coursera / Meta</p>
+                        <p class="text-neutral-400 text-sm mb-4">Completed 9-course specialization covering React, Responsive UI design, Version Control, and UX best practices.</p>
+                        <a href="#" class="text-xs font-semibold text-red-500 hover:text-red-400 inline-flex items-center gap-1">
+                            Verify Certificate <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    <!-- Achievement 3 -->
+                    <div class="glass-card p-6 rounded-2xl border border-neutral-800 hover:border-red-600 transition-colors reveal">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                            <span class="text-xs font-semibold px-3 py-1 bg-red-950/60 text-red-400 border border-red-800/50 rounded-full">2023</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-1">Dean's Honor List</h3>
+                        <p class="text-red-500 text-sm font-medium mb-3">State University of Technology</p>
+                        <p class="text-neutral-400 text-sm mb-4">Awarded top academic honors for maintaining a GPA above 3.75 across consecutive semesters.</p>
+                        <a href="#" class="text-xs font-semibold text-red-500 hover:text-red-400 inline-flex items-center gap-1">
+                            Read Announcement <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 10. RESUME SECTION                         -->
+        <!-- ========================================== -->
+        <section id="resume" class="py-24 bg-[#171717]">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Curriculum <span class="text-red-600">Vitae</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="glass-card p-8 sm:p-12 rounded-3xl border border-neutral-800 space-y-8 reveal">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-neutral-800 pb-6 gap-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-white">Alex Morgan</h3>
+                            <p class="text-red-500 font-medium">Software Engineer & Web Specialist</p>
+                        </div>
+                        <!-- Download and View Buttons -->
+                        <div class="flex flex-wrap gap-3">
+                            <a href="./assets/resume.pdf" download="Alex_Morgan_Resume.pdf" class="btn text-sm py-2.5 px-5">
+                                <i class="fa-solid fa-download"></i> Download Resume
+                            </a>
+                            <a href="./assets/resume.pdf" target="_blank" class="btn text-sm py-2.5 px-5">
+                                <i class="fa-solid fa-eye"></i> View PDF
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder Notice if PDF missing -->
+                    <div class="p-4 bg-red-950/30 border border-red-800/40 rounded-xl text-xs text-neutral-300">
+                        <span class="text-red-500 font-bold"><i class="fa-solid fa-circle-info"></i> Notice:</span> The resume download points to <code class="bg-black/40 px-1 py-0.5 rounded text-white">./assets/resume.pdf</code>. Place your actual resume PDF in your project assets folder.
+                    </div>
+
+                    <!-- Compact Resume Content Overview -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-user-gear text-red-500"></i> Summary
+                            </h4>
+                            <p class="text-neutral-300 text-sm leading-relaxed">
+                                Software Developer with foundational strength in algorithm design, modern JavaScript frameworks, and database architecture. Eager to solve challenging problems and build scalable web solutions.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-briefcase text-red-500"></i> Experience Overview
+                            </h4>
+                            <ul class="space-y-3 text-sm text-neutral-300">
+                                <li class="flex items-start gap-2">
+                                    <span class="text-red-500 font-bold">•</span>
+                                    <span><strong>Software Intern</strong> - Tech Corp (Summer 2024)</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="text-red-500 font-bold">•</span>
+                                    <span><strong>Peer Code Tutor</strong> - Computer Science Dept (2023 - 2024)</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- 11. CONTACT INFORMATION                    -->
+        <!-- ========================================== -->
+        <section id="contact" class="py-24 bg-[#0D0D0D]">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Section Title -->
+                <div class="text-center mb-16 reveal">
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                        Get In <span class="text-red-600">Touch</span>
+                    </h2>
+                    <div class="w-20 h-1 bg-red-600 mx-auto mt-4 rounded-full"></div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+
+                    <!-- Left Column: Contact Details -->
+                    <div class="lg:col-span-5 space-y-6 reveal">
+                        <div class="glass-card p-8 rounded-3xl border border-neutral-800 space-y-6">
+                            <h3 class="text-2xl font-bold text-white">Contact Information</h3>
+                            <p class="text-neutral-400 text-sm">Feel free to reach out for project inquiries, job opportunities, or technical collaborations.</p>
+
+                            <div class="space-y-4 pt-2">
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center text-xl shrink-0">
+                                        <i class="fa-solid fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-neutral-400 uppercase font-semibold">Email</p>
+                                        <a href="mailto:alex.morgan@example.com" class="text-white font-medium hover:text-red-500 transition-colors">alex.morgan@example.com</a>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center text-xl shrink-0">
+                                        <i class="fa-solid fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-neutral-400 uppercase font-semibold">Phone</p>
+                                        <p class="text-white font-medium">+1 (555) 019-2834</p>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <div class="w-12 h-12 rounded-xl bg-red-600/10 text-red-500 flex items-center justify-center text-xl shrink-0">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-neutral-400 uppercase font-semibold">Location</p>
+                                        <p class="text-white font-medium">San Francisco, California, USA</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Social Connections -->
+                            <div class="pt-4 border-t border-neutral-800">
+                                <p class="text-xs text-neutral-400 uppercase font-semibold mb-3">Follow Me</p>
+                                <div class="flex space-x-4">
+                                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-neutral-800 text-white hover:bg-red-600 flex items-center justify-center transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                    </a>
+                                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-neutral-800 text-white hover:bg-red-600 flex items-center justify-center transition-colors">
+                                        <i class="fa-brands fa-linkedin"></i>
+                                    </a>
+                                    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-lg bg-neutral-800 text-white hover:bg-red-600 flex items-center justify-center transition-colors">
+                                        <i class="fa-brands fa-instagram"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Contact Form -->
+                    <div class="lg:col-span-7 reveal">
+                        <div class="glass-card p-8 rounded-3xl border border-neutral-800">
+                            <!-- Alert Box for Status Messages -->
+                            <div id="form-alert" class="hidden mb-6 p-4 rounded-xl text-sm font-medium"></div>
+
+                            <form id="contact-form" class="space-y-6" novalidate>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    <div>
+                                        <label for="name" class="block text-xs font-semibold uppercase text-neutral-400 mb-2">Full Name *</label>
+                                        <input type="text" id="name" name="name" required placeholder="John Doe" class="w-full bg-[#171717] border border-neutral-800 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-red-600 transition-colors">
+                                        <span class="text-red-500 text-xs mt-1 hidden" id="name-error">Please enter your full name.</span>
+                                    </div>
+
+                                    <div>
+                                        <label for="email" class="block text-xs font-semibold uppercase text-neutral-400 mb-2">Email Address *</label>
+                                        <input type="email" id="email" name="email" required placeholder="john@example.com" class="w-full bg-[#171717] border border-neutral-800 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-red-600 transition-colors">
+                                        <span class="text-red-500 text-xs mt-1 hidden" id="email-error">Please enter a valid email address.</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="subject" class="block text-xs font-semibold uppercase text-neutral-400 mb-2">Subject *</label>
+                                    <input type="text" id="subject" name="subject" required placeholder="Project Discussion / Job Offer" class="w-full bg-[#171717] border border-neutral-800 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-red-600 transition-colors">
+                                    <span class="text-red-500 text-xs mt-1 hidden" id="subject-error">Please provide a subject.</span>
+                                </div>
+
+                                <div>
+                                    <label for="message" class="block text-xs font-semibold uppercase text-neutral-400 mb-2">Message *</label>
+                                    <textarea id="message" name="message" rows="5" required placeholder="Write your message here..." class="w-full bg-[#171717] border border-neutral-800 rounded-xl px-4 py-3 text-white placeholder-neutral-600 focus:outline-none focus:border-red-600 transition-colors"></textarea>
+                                    <span class="text-red-500 text-xs mt-1 hidden" id="message-error">Please type a message.</span>
+                                </div>
+
+                                <button type="submit" class="btn w-full text-base">
+                                    <i class="fa-solid fa-paper-plane"></i> Send Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================== -->
+    <!-- 12. FOOTER                                 -->
+    <!-- ========================================== -->
+    <footer class="bg-[#050505] border-t border-neutral-800/80 py-12 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <!-- Footer Logo & Tagline -->
+                <div class="text-center md:text-left">
+                    <a href="#home" class="inline-flex items-center space-x-2">
+                        <span class="w-8 h-8 rounded-lg bg-red-600 flex items-center justify-center font-bold text-base text-white">AM</span>
+                        <span class="text-lg font-bold text-white">Alex<span class="text-red-600">.Morgan</span></span>
+                    </a>
+                    <p class="text-xs text-neutral-400 mt-2">Crafting elegant software, algorithms, and clean interfaces.</p>
+                </div>
+
+                <!-- Footer Quick Links -->
+                <nav class="flex flex-wrap justify-center gap-6 text-xs text-neutral-400 font-medium">
+                    <a href="#home" class="hover:text-red-500 transition-colors">Home</a>
+                    <a href="#about" class="hover:text-red-500 transition-colors">About</a>
+                    <a href="#projects" class="hover:text-red-500 transition-colors">Projects</a>
+                    <a href="#skills" class="hover:text-red-500 transition-colors">Skills</a>
+                    <a href="#contact" class="hover:text-red-500 transition-colors">Contact</a>
+                </nav>
+
+                <!-- Copyright -->
+                <div class="text-center md:text-right text-xs text-neutral-400">
+                    &copy; <span id="current-year"></span> Alex Morgan. All rights reserved.
+                </div>
+            </div>
+        </div>
+
+        <!-- Red Back To Top Floating Button -->
+        <button id="back-to-top" class="fixed bottom-6 right-6 btn w-12 h-12 !p-0 rounded-full text-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300 z-40" aria-label="Back to top">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- 13. JAVASCRIPT & INTERACTION LOGIC         -->
+    <!-- ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Dynamic Typing Effect for Hero Section
+            const typedTextSpan = document.getElementById('typed-text');
+            const roles = ["Frontend Developer", "Software Developer", "Problem Solver", "Technology Enthusiast"];
+            let roleIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeEffect() {
+                const currentRole = roles[roleIndex];
+                
+                if (isDeleting) {
+                    typedTextSpan.textContent = currentRole.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typedTextSpan.textContent = currentRole.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                let typingSpeed = isDeleting ? 40 : 100;
+
+                if (!isDeleting && charIndex === currentRole.length) {
+                    typingSpeed = 2000; // Pause at end of word
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    roleIndex = (roleIndex + 1) % roles.length;
+                    typingSpeed = 500;
+                }
+
+                setTimeout(typeEffect, typingSpeed);
+            }
+            typeEffect();
+
+            // 2. Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // 3. Navbar Background Scroll Effect & Active Link Highlight
+            const navbar = document.getElementById('navbar');
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-black/90', 'border-red-900/30', 'shadow-lg');
+                } else {
+                    navbar.classList.remove('bg-black/90', 'border-red-900/30', 'shadow-lg');
+                }
+
+                // Active Link Tracking
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 120;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('text-red-500');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('text-red-500');
+                    }
+                });
+
+                // Back to Top Button Visibility
+                const backToTopBtn = document.getElementById('back-to-top');
+                if (window.scrollY > 400) {
+                    backToTopBtn.classList.remove('opacity-0', 'pointer-events-none');
+                    backToTopBtn.classList.add('opacity-100');
+                } else {
+                    backToTopBtn.classList.add('opacity-0', 'pointer-events-none');
+                    backToTopBtn.classList.remove('opacity-100');
+                }
+            });
+
+            // Back to top click event
+            document.getElementById('back-to-top').addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // 4. About Me Read More Toggle
+            const readMoreBtn = document.getElementById('about-read-more-btn');
+            const moreContent = document.getElementById('about-more-content');
+            const readMoreIcon = document.getElementById('read-more-icon');
+
+            readMoreBtn.addEventListener('click', () => {
+                moreContent.classList.toggle('hidden');
+                if (moreContent.classList.contains('hidden')) {
+                    readMoreBtn.innerHTML = '<i class="fa-solid fa-chevron-down"></i> Read More';
+                } else {
+                    readMoreBtn.innerHTML = '<i class="fa-solid fa-chevron-up"></i> Show Less';
+                }
+            });
+
+            // 5. Scroll Reveal & Skill Progress Bar Intersection Observer
+            const revealElements = document.querySelectorAll('.reveal');
+            const progressBars = document.querySelectorAll('.progress-bar');
+
+            const observerOptions = {
+                threshold: 0.15
+            };
+
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        
+                        // If it's the skills section or contains progress bars, animate them
+                        const bars = entry.target.querySelectorAll('.progress-bar');
+                        bars.forEach(bar => {
+                            const targetWidth = bar.getAttribute('data-progress');
+                            bar.style.width = targetWidth;
+                        });
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            revealElements.forEach(el => revealObserver.observe(el));
+
+            // Also directly observe progress bar section elements
+            document.querySelectorAll('#skills .reveal').forEach(el => revealObserver.observe(el));
+
+            // 6. Project Filter Logic
+            const filterBtns = document.querySelectorAll('.project-filter-btn');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const filter = btn.getAttribute('data-filter');
+
+                    projectCards.forEach(card => {
+                        const category = card.getAttribute('data-category');
+                        if (filter === 'all' || category === filter) {
+                            card.style.display = 'flex';
+                            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'scale(1)'; }, 50);
+                        } else {
+                            card.style.opacity = '0';
+                            card.style.transform = 'scale(0.95)';
+                            setTimeout(() => { card.style.display = 'none'; }, 300);
+                        }
+                    });
+                });
+            });
+
+            // 7. Contact Form Validation & Submission Handling
+            const contactForm = document.getElementById('contact-form');
+            const formAlert = document.getElementById('form-alert');
+
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Simple Field Validations
+                const name = document.getElementById('name');
+                const email = document.getElementById('email');
+                const subject = document.getElementById('subject');
+                const message = document.getElementById('message');
+
+                let isValid = true;
+
+                // Reset Error states
+                document.querySelectorAll('[id$="-error"]').forEach(el => el.classList.add('hidden'));
+
+                if (!name.value.trim()) {
+                    document.getElementById('name-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email.value.trim() || !emailRegex.test(email.value)) {
+                    document.getElementById('email-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!subject.value.trim()) {
+                    document.getElementById('subject-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (!message.value.trim()) {
+                    document.getElementById('message-error').classList.remove('hidden');
+                    isValid = false;
+                }
+
+                if (isValid) {
+                    // Show friendly feedback notice (Notice: No false claim of backend delivery)
+                    formAlert.className = "mb-6 p-4 rounded-xl text-sm font-medium bg-red-950/80 border border-red-600 text-white";
+                    formAlert.innerHTML = "<i class='fa-solid fa-circle-check text-red-500 mr-2'></i> Form validated successfully! (Please connect a form backend service like Formspree, EmailJS, or Netlify Forms to process real submissions).";
+                    formAlert.classList.remove('hidden');
+
+                    contactForm.reset();
+                } else {
+                    formAlert.className = "mb-6 p-4 rounded-xl text-sm font-medium bg-neutral-900 border border-neutral-700 text-neutral-300";
+                    formAlert.innerHTML = "<i class='fa-solid fa-triangle-exclamation text-red-500 mr-2'></i> Please fix the highlighted fields above.";
+                    formAlert.classList.remove('hidden');
+                }
+            });
+
+            // 8. Auto Update Current Year in Footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+        });
+    </script>
+</body>
+</html>
