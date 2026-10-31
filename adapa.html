@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>CarePoint Clinic</title>
+  <style>
+    body{font:16px Arial;margin:0;background:#f1f8f7;color:#243b40}
+    header{background:#147d76;color:white;padding:18px 8%}
+    nav, .doctors{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    a{color:white;margin-left:12px;text-decoration:none}
+    main{max-width:800px;margin:30px auto;padding:0 18px}
+    h1,h2{color:#147d76}
+    .card,form{background:white;padding:16px;border-radius:10px}
+    .card{flex:1;min-width:170px}
+    .card p{color:#60777b}
+    form{max-width:480px}
+    label{display:block;margin:12px 0 5px;font-weight:bold}
+    input,select,textarea,button{width:100%;padding:10px;border:1px solid #cadbd8;border-radius:6px}
+    button{margin-top:14px;background:#147d76;color:white;border:0;cursor:pointer}
+  </style>
+</head>
+<body>
+  <header>
+    <nav><strong>CarePoint Clinic</strong><div><a href="#doctors">Doctors</a><a href="#book">Book</a></div></nav>
+  </header>
+  <main>
+    <h1>Care made simple</h1>
+    <p>Meet our doctors and book a visit.</p>
+
+    <h2 id="doctors">Our Doctors</h2>
+    <section class="doctors">
+      <article class="card"><b>Dr. Ramu</b><p>Family Medicine · 9 AM–5 PM</p></article>
+      <article class="card"><b>Dr. Srinivas</b><p>Cardiology · 10 AM–4 PM</p></article>
+      <article class="card"><b>Dr. Sirisha</b><p>Dermatology · 9 AM–3 PM</p></article>
+    </section>
+
+    <h2 id="book">Book an Appointment</h2>
+    <form onsubmit="event.preventDefault();alert('Request submitted!')">
+      <label for="name">Name</label><input id="name" placeholder="Full name" required>
+      <label for="email">Email</label><input id="email" type="email" required>
+      <label for="phone">Phone</label><input id="phone" type="tel" required>
+      <label for="doctor">Doctor</label>
+      <select id="doctor" required>
+        <option value="">Choose a doctor</option>
+        <option>Dr. Ramu</option><option>Dr. Srinivas</option><option>Dr. Sirisha</option>
+      </select>
+      <label for="date">Date</label><input id="date" type="date" required>
+      <label for="time">Time</label>
+      <select id="time" required>
+        <option value="">Choose a time</option>
+        <option>9:00 AM</option><option>10:30 AM</option><option>1:00 PM</option><option>3:30 PM</option>
+      </select>
+      <label for="reason">Reason for visit</label>
+      <button>Book a Visit</button>
+    </form>
+  </main>
+</body>
+</html>

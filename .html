@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sunrise Hotel</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font:16px Arial;background:#f5f7f5;color:#26352e}
+header{background:#315b48;color:white;padding:18px 7%;display:flex;justify-content:space-between}
+nav a{color:white;text-decoration:none;margin-left:16px}
+main{max-width:900px;margin:30px auto;padding:0 18px}
+.rooms{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card,form{background:white;padding:14px;border-radius:12px;box-shadow:0 3px 12px #0001}
+.card img{width:100%;height:150px;object-fit:cover;border-radius:8px}
+.card p{color:#60746a}
+form{max-width:600px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{font-weight:bold;font-size:14px}
+input,select,button{width:100%;padding:10px;border:1px solid #ccd7d0;border-radius:6px}
+button{grid-column:1/-1;background:#315b48;color:white;border:0;cursor:pointer}
+@media(max-width:650px){.rooms{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){.rooms,form{grid-template-columns:1fr}button{grid-column:auto}}
+</style>
+</head>
+<body>
+<header>
+    <strong>🏨 Sunrise Hotel</strong>
+    <nav><a href="#rooms">Rooms</a><a href="#book">Reserve</a></nav>
+</header>
+
+<main>
+<h1>Stay somewhere special</h1>
+<p>Comfort, great service, and a relaxing stay.</p>
+<p>✨ Free Wi-Fi · 🍽 Restaurant · 🏊 Pool · 🅿 Free parking</p>
+
+<h2 id="rooms">Our Rooms</h2>
+<section class="rooms">
+<article class="card">
+  <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600" alt="Cozy standard hotel room">
+  <h3>Standard Room</h3><p>Queen bed · Wi-Fi</p><strong>$90 / night</strong>
+</article>
+<article class="card">
+  <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600" alt="Deluxe hotel room">
+  <h3>Deluxe Room</h3><p>King bed · City view</p><strong>$140 / night</strong>
+</article>
+<article class="card">
+  <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600" alt="Spacious hotel suite">
+  <h3>Family Suite</h3><p>Two beds · Breakfast</p><strong>$200 / night</strong>
+</article>
+</section>
+
+<h2 id="book">Reserve Your Stay</h2>
+<form onsubmit="event.preventDefault();alert('Reservation request submitted!')">
+<label for="name">Your name<input id="name" required></label>
+<label for="email">Email<input id="email" type="email" required></label>
+<label for="checkin">Check-in<input id="checkin" type="date" required></label>
+<label for="checkout">Check-out<input id="checkout" type="date" required></label>
+<label for="room">Room type
+<select id="room"><option>Standard Room</option><option>Deluxe Room</option><option>Family Suite</option></select>
+</label>
+<label for="guests">Guests<input id="guests" type="number" min="1" value="1"></label>
+<button type="submit">Check Availability</button>
+</form>
+</main>
+</body>
+</html>

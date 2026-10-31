@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Online Food Ordering</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #fcddea;
+            text-align: center;
+        }
+
+        header {
+            background-color: rgb(41, 4, 37);
+            color: white;
+            padding: 20px;
+        }
+
+        nav {
+            background-color:rgba(97, 134, 10, 0.458);
+            padding: 12px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        h2 {
+            color: orangered;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .food {
+            background-color: white;
+            width: 220px;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px gray;
+        }
+
+        .food img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        button {
+            background-color: orangered;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: green;
+        }
+          footer {
+            background-color: #333;
+            color: white;
+            padding: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Foodie Restaurant</h1>
+    <p>Delicious Food Delivered to Your Door!</p>
+</header>
+
+<nav>
+    <a href="#home">Home</a>
+    <a href="#menu">Menu</a>
+    <a href="#offers">Offers</a>
+    <a href="#reviews">Reviews</a>
+</nav>
+
+<section id="home">
+    <h2>Welcome to Foodie Restaurant</h2>
+    <p>Enjoy fresh and tasty food at affordable prices.</p>
+</section>
+
+<section id="offers">
+    <h2>Special Offer!</h2>
+    <p>Get 20% off on selected food items.</p>
+</section>
+
+<section id="menu">
+    <h2>Our Food Menu</h2>
+
+    <div class="menu">
+
+        <div class="food">
+            <img src="adapa.html/23a2425e8d82f36c86197a7e03e95270" alt="Pani Puri">
+            <h3>Pani Puri</h3>
+            <p>Price: ₹99</p>
+            <button onclick="order('Pani Puri')">Order Now</button>
+        </div>
+
+        <div class="food">
+            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd" alt="Burger">
+            <h3>Burger</h3>
+            <p>Price: ₹99</p>
+            <button onclick="order('Burger')">Order Now</button>
+        </div>
+
+        <div class="food">
+            <img src="adapa.html/OIP.jpg" alt="Biryani">
+            <h3>Biryani</h3>
+            <p>Price: ₹180</p>
+            <button onclick="order('Biryani')">Order Now</button>
+        </div>
+
+    </div>
+</section>
+
+<section id="reviews">
+    <h2>Customer Reviews</h2>
+    <p>"Very tasty food and fast service!" ⭐⭐⭐⭐⭐</p>
+    <p>"Good quality and affordable prices." ⭐⭐⭐⭐⭐</p>
+</section>
+
+<footer>
+    <p>Contact: foodie@example.com</p>
+    <p>&copy; 2026 Foodie Restaurant</p>
+</footer>
+<script>
+    function order(food) {
+        alert("You selected " + food + "!");
+    }
+</script>
+
+</body>
+</html>
